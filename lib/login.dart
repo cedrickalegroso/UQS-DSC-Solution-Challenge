@@ -6,7 +6,7 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  final formKey =GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   String password;
   String email;
   @override
@@ -29,26 +29,30 @@ class _AuthPageState extends State<AuthPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Container(
-            child: Text(
-              'Login',
-              style: TextStyle(
-                color: Colors.lightBlueAccent[100],
-                letterSpacing: 2,
-                fontSize: 20
-              ),
-            )
+          Row(
+            children: <Widget>[
+              Text('Welcome',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(color: Colors.white, fontSize: 50)),
+            ],
           ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Long waiting time is a thing in the past. come \nto your service whent its your turn',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              )
+            ],
+          ),
+        
           Container(
-            margin: EdgeInsets.fromLTRB(30, 10, 30,10),
+            margin: EdgeInsets.fromLTRB(30, 50, 30, 40),
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.all(
-                Radius.circular(25)
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(25)),
               color: Colors.white,
             ),
+            
             child: Form(
               key: formKey,
               child: ListView(
@@ -75,20 +79,18 @@ class _AuthPageState extends State<AuthPage> {
                       onSaved: (value) => password,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: '6-12 characters',
-                        labelText: "Password",
-                        contentPadding: EdgeInsets.all(10)
-                      ),
+                          hintText: '6-12 characters',
+                          labelText: "Password",
+                          contentPadding: EdgeInsets.all(10)),
                     ),
                   ),
                   SizedBox(height: 10),
                   Container(
-                    padding: EdgeInsets.only(left: 100,right: 100),
+                    padding: EdgeInsets.only(left: 100, right: 100),
                     child: RaisedButton(
                       color: Colors.lightBlueAccent,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                      ),
+                          borderRadius: BorderRadius.circular(20)),
                       onPressed: () {
                         final form = formKey.currentState;
                         form.save();
@@ -110,7 +112,7 @@ class _AuthPageState extends State<AuthPage> {
                       'Log in with special providers',
                       style: TextStyle(),
                       textAlign: TextAlign.center,
-                      ),
+                    ),
                   ),
                   SizedBox(height: 10)
                 ],
