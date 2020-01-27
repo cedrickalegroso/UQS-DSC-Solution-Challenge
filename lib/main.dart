@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'login.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -32,8 +33,8 @@ class _MyAppState extends State<MyApp> {
         
       ),
       
-      seconds: 10,
-      navigateAfterSeconds: AfterSplash(),
+      seconds: 5,
+      navigateAfterSeconds: AuthPage(),
       image: new Image.asset('assets/launch_image.png'),
       backgroundColor: Colors.white,
       styleTextUnderTheLoader: new TextStyle(),
@@ -44,20 +45,3 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class AfterSplash extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Welcome In SplashScreen Package"),
-        automaticallyImplyLeading: false,
-      ),
-      body: new Center(
-        child: new Text(
-          "Succeeded!",
-          style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
-        ),
-      ),
-    );
-  }
-}
