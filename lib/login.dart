@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -7,8 +9,52 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   final formKey = GlobalKey<FormState>();
-  String password;
-  String email;
+
+  String _password;
+  String _email;
+
+  Object $User;
+
+ 
+  // @carl gin saylo ko di ang validation 
+  
+  // Bool to determing if the form is valid
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form.validate()){
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  // called by on press submit 
+  void validateAndSubmit() async  {
+    // calls the form validation
+   if(validateAndSave()) {
+     try{ // try to create the user
+      AuthResult credentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(email:_email, password: _password);
+      return updateProfile(credentials.user); // call the Update profile so we can inject the data on database
+    }catch (e) { // catch the error 
+       print(e); // print the error 
+     }
+   } else {
+     print("error!"); // Error if on validateSubmit returned false
+   }
+
+  }
+
+  void updateProfile(user) {
+     
+    Firestore.instance.collection('users').add({ // add the uid and the email in the firestore document ref
+      'uid': user.uid,
+      'email': user.email
+     }    
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +90,6 @@ class _AuthPageState extends State<AuthPage> {
               )
             ],
           ),
-        
           Container(
             margin: EdgeInsets.fromLTRB(30, 50, 30, 40),
             padding: EdgeInsets.all(10),
@@ -52,7 +97,6 @@ class _AuthPageState extends State<AuthPage> {
               borderRadius: BorderRadius.all(Radius.circular(25)),
               color: Colors.white,
             ),
-            
             child: Form(
               key: formKey,
               child: ListView(
@@ -62,7 +106,7 @@ class _AuthPageState extends State<AuthPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
                       textAlign: TextAlign.left,
-                      onSaved: (value) => email = value,
+                      onSaved: (value) => _email = value,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'email@gmail.com',
@@ -76,7 +120,7 @@ class _AuthPageState extends State<AuthPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
                       textAlign: TextAlign.left,
-                      onSaved: (value) => password,
+                      onSaved: (value) => _password = value,
                       obscureText: true,
                       decoration: InputDecoration(
                           hintText: '6-12 characters',
@@ -91,13 +135,7 @@ class _AuthPageState extends State<AuthPage> {
                       color: Colors.lightBlueAccent,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      onPressed: () {
-                        final form = formKey.currentState;
-                        form.save();
-                        if (form.validate()) {
-                          print("$email $password");
-                        }
-                      },
+                      onPressed: validateAndSubmit,
                       child: Text(
                         'Submit',
                         style: TextStyle(
