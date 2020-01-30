@@ -1,16 +1,20 @@
-# uqsbeta
+#UQS
 
-A new Flutter project.
+## Updates
+----------------------------------------------------------
+App current Verions WEB CLIENT: 0.0.2  | Android: 0.0.2 
+----------------------------------------------------------
 
-## Getting Started
+Added Database Functions for the web and mobile app | January 29, 2019
+First release of UQS on the web | January 28, 2019
 
-This project is a starting point for a Flutter application.
+## Technology used
+----------------------------------------------------------
+Flutter, Dart, Firebase, Cloud Firestore, Angular
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Developers
+----------------------------------------------------------
+Dancedrick Alegroso | Lead developer, Full Stack 
+Carl Palisan | Flutter Lead developer
+Steve Felizard | Flutter front end, UI
+Gaille Cabanggay | Firebase, Flutter
