@@ -14,7 +14,7 @@ Flutter, Dart, Firebase, Cloud Firestore, Angular
 
 ## Developers
 ----------------------------------------------------------
-Dancedrick Alegroso | Lead developer, Full Stack 
-Carl Palisan | Flutter Lead developer
-Steve Felizard | Flutter front end, UI
-Gaille Cabanggay | Firebase, Flutter
+Dancedrick Alegroso | Lead developer, Full Stack  \n
+Carl Palisan | Flutter Lead developer \n
+Steve Felizard | Flutter front end, UI \n
+Gaille Cabanggay | Firebase, Flutter \n
