@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uqsbeta/Drawer.dart';
 import 'package:uqsbeta/models/user.dart';
 
 class AuthPage extends StatefulWidget {
@@ -183,7 +184,14 @@ class _AuthPageState extends State<AuthPage> {
                       color: Colors.lightBlueAccent,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      onPressed: signInEmail,
+                      onPressed: () async {
+                        await signInEmail();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Homepage()),
+                        );
+                      },
+
                       child: Text(
                         'Submit',
                         style: TextStyle(
