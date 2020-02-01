@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uqsbeta/models/user.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -15,6 +16,32 @@ class _AuthPageState extends State<AuthPage> {
 
   Object $User;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  //create a user object based on a user from the database
+  User _userFromFireBaseUser(FirebaseUser user){
+    return user != null ? User(uid: user.uid) : null;
+  }
+
+  Future signInEmail() async {
+    if (validateAndSave()) {
+      try {
+        AuthResult result = await _auth.signInWithEmailAndPassword(email: _email, password: _password);
+        FirebaseUser user = result.user;
+        print("user with UID " + user.uid);
+        print("signed in");
+        
+        return _userFromFireBaseUser(user);
+      }catch (e) {
+        print(e);
+        return null;
+      }
+    } else {
+      print("invalid input");
+    }
+    
+    
+    
+  }
  
   // @carl gin saylo ko di ang validation 
   
@@ -54,6 +81,8 @@ class _AuthPageState extends State<AuthPage> {
      }    
     );
   }
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +109,7 @@ class _AuthPageState extends State<AuthPage> {
               shrinkWrap: true,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.fromLTRB(30,10,30,10),
+                  padding: EdgeInsets.fromLTRB(20,30,20,10),
                   alignment: Alignment.bottomLeft,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,10 +119,10 @@ class _AuthPageState extends State<AuthPage> {
                         style: TextStyle(
                           wordSpacing: 3,
                           color: Colors.white,
-                          fontSize: 50,
+                          fontSize: 45,
                           ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       Text(
                         'Long waiting time is a thing in the past. Come to your service when it\'s your turn.',
                         style: TextStyle(
@@ -108,7 +137,7 @@ class _AuthPageState extends State<AuthPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(30, 20, 30, 40),
+            margin: EdgeInsets.all(15),
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -120,41 +149,41 @@ class _AuthPageState extends State<AuthPage> {
                 shrinkWrap: true,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       textAlign: TextAlign.left,
-                      validator: (value) => value.isEmpty ? 'Please provide email address' : null,
+                      validator: (value) => value.isEmpty ? 'Email address is required' : null,
                       onSaved: (value) => _email = value,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'email@gmail.com',
                         labelText: "Email Address",
-                        contentPadding: EdgeInsets.all(10),
+                        contentPadding: EdgeInsets.all(8),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 8),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       textAlign: TextAlign.left,
-                      validator: (value) => value.isEmpty ? 'Please provide password' : null,
+                      validator: (value) => value.isEmpty ? 'Password is required' : null,
                       onSaved: (value) => _password = value,
                       obscureText: true,
                       decoration: InputDecoration(
                           hintText: '6-12 characters',
                           labelText: "Password",
-                          contentPadding: EdgeInsets.all(10)),
+                          contentPadding: EdgeInsets.all(8)),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 8),
                   Container(
                     padding: EdgeInsets.only(left: 100, right: 100),
                     child: RaisedButton(
                       color: Colors.lightBlueAccent,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      onPressed: validateAndSubmit,
+                      onPressed: signInEmail,
                       child: Text(
                         'Submit',
                         style: TextStyle(
@@ -163,7 +192,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 8),
                   Container(
                     child: Text(
                       'Log in with special providers',
@@ -171,7 +200,7 @@ class _AuthPageState extends State<AuthPage> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(height: 10)
+                  SizedBox(height: 8)
                 ],
               ),
             ),
