@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:uqsbeta/authservice.dart';
+
 
 
 class Homepage extends StatelessWidget {
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -38,8 +41,12 @@ class Homepage extends StatelessWidget {
             CostumListile(Icons.person,'Profile',()=>{}),
             CostumListile(Icons.notifications,'Notification',() => {} ),
             CostumListile(Icons.settings,'Settings', () => {}),
-             CostumListile(Icons.help,'Help',()=>{}),
-            CostumListile(Icons.lock,'Log out', ()=>{}),
+            CostumListile(Icons.help,'Help',()=>{}),
+            CostumListile(Icons.lock,'Log out', () async {
+              await _auth.signOut();
+              Navigator.of(context).pushReplacementNamed('/login');
+              }
+            ),
           ],
         )
       ),

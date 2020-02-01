@@ -1,93 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uqsbeta/Drawer.dart';
-import 'package:uqsbeta/models/user.dart';
-
+import 'package:uqsbeta/authservice.dart';
+import 'package:uqsbeta/loading.dart';
 class AuthPage extends StatefulWidget {
+  
+
   @override
   _AuthPageState createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
-  final formKey = GlobalKey<FormState>();
+final _formKey = GlobalKey<FormState>();
 
-  String _password;
-  String _email;
-
-  Object $User;
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  //create a user object based on a user from the database
-  User _userFromFireBaseUser(FirebaseUser user){
-    return user != null ? User(uid: user.uid) : null;
-  }
-
-  Future signInEmail() async {
-    if (validateAndSave()) {
-      try {
-        AuthResult result = await _auth.signInWithEmailAndPassword(email: _email, password: _password);
-        FirebaseUser user = result.user;
-        print("user with UID " + user.uid);
-        print("signed in");
-        
-        return _userFromFireBaseUser(user);//calls the user object based from the firebase then return the uid of the user
-      }catch (e) {
-        print(e);
-        return null;
-      }
-    } else {
-      print("invalid input");
-    }
-    
-    
-    
-  }
- 
-  // @carl gin saylo ko di ang validation 
-  
-  // Bool to determing if the form is valid
-  bool validateAndSave() {
-    final form = formKey.currentState;
-    if (form.validate()){
-      form.save();
-      return true;
-    } else {
-      return false;
-    }
-
-  }
-
-  // called by on press submit 
-  void validateAndSubmit() async  {
-    // calls the form validation
-   if(validateAndSave()) {
-     try{ // try to create the user
-      AuthResult credentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(email:_email, password: _password);
-      return updateProfile(credentials.user); // call the Update profile so we can inject the data on database
-    }catch (e) { // catch the error 
-       print(e); // print the error 
-     }
-   } else {
-     print("error!"); // Error if on validateSubmit returned false
-   }
-
-  }
-
-  void updateProfile(user) {
-     
-    Firestore.instance.collection('users').add({ // add the uid and the email in the firestore document ref
-      'uid': user.uid,
-      'email': user.email
-     }    
-    );
-  }
-  
-  
-
+final AuthService _auth = AuthService();
+String _password = '';
+String _email = '';
+bool loading = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
+      resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
         elevation: 0,
@@ -145,16 +76,20 @@ class _AuthPageState extends State<AuthPage> {
               color: Colors.white,
             ),
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: ListView(
                 shrinkWrap: true,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      autofocus: false,
                       textAlign: TextAlign.left,
                       validator: (value) => value.isEmpty ? 'Email address is required' : null,
-                      onSaved: (value) => _email = value,
+                      onChanged: (val) {
+                        setState(() => _email = val.trim());
+                      },
+                      onSaved: (value) => _email = value.trim(),
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'email@gmail.com',
@@ -167,9 +102,13 @@ class _AuthPageState extends State<AuthPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      autofocus: false,
                       textAlign: TextAlign.left,
                       validator: (value) => value.isEmpty ? 'Password is required' : null,
-                      onSaved: (value) => _password = value,
+                      onChanged: (val) {
+                        setState(() => _password = val);
+                      },
+                      onSaved: (value) => _password = value.trim(),
                       obscureText: true,
                       decoration: InputDecoration(
                           hintText: '6-12 characters',
@@ -183,17 +122,25 @@ class _AuthPageState extends State<AuthPage> {
                     child: RaisedButton(
                       color: Colors.lightBlueAccent,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                          borderRadius: BorderRadius.circular(20)
+                      ),
                       onPressed: () async {
-                        await signInEmail();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Homepage()),
-                        );
+                        if (_formKey.currentState.validate()) {
+                          setState(() {
+                            loading = true;
+                          });
+                          dynamic result = await _auth.signInEmail(_email, _password);
+                          if (result == null){
+                            setState(() {
+                              loading = false;
+                            });
+                          } else {
+                            Navigator.of(context).pushReplacementNamed('/home');
+                          }
+                        }
                       },
-
                       child: Text(
-                        'Submit',
+                        'Login',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -202,10 +149,14 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   SizedBox(height: 8),
                   Container(
-                    child: Text(
-                      'Log in with special providers',
-                      style: TextStyle(),
-                      textAlign: TextAlign.center,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacementNamed('/signup');
+                      },
+                      child: Text(
+                        'New user? Click here to Sign up',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   SizedBox(height: 8)
