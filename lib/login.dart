@@ -30,7 +30,7 @@ class _AuthPageState extends State<AuthPage> {
         print("user with UID " + user.uid);
         print("signed in");
         
-        return _userFromFireBaseUser(user);
+        return _userFromFireBaseUser(user);//calls the user object based from the firebase then return the uid of the user
       }catch (e) {
         print(e);
         return null;
