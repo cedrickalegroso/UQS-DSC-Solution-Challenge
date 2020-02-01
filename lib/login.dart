@@ -75,23 +75,40 @@ class _AuthPageState extends State<AuthPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Text('Welcome',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 50)),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Long waiting time is a thing in the past. come \nto your service whent its your turn',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              )
-            ],
+          Flexible(
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(30,10,30,10),
+                  alignment: Alignment.bottomLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Welcome',
+                        style: TextStyle(
+                          wordSpacing: 3,
+                          color: Colors.white,
+                          fontSize: 50,
+                          ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Long waiting time is a thing in the past. Come to your service when it\'s your turn.',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          ),
+                      ),
+                    ],
+                  ),
+                ), 
+              ],
+            ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(30, 50, 30, 40),
+            margin: EdgeInsets.fromLTRB(30, 20, 30, 40),
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -106,6 +123,7 @@ class _AuthPageState extends State<AuthPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
                       textAlign: TextAlign.left,
+                      validator: (value) => value.isEmpty ? 'Please provide email address' : null,
                       onSaved: (value) => _email = value,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -120,6 +138,7 @@ class _AuthPageState extends State<AuthPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
                       textAlign: TextAlign.left,
+                      validator: (value) => value.isEmpty ? 'Please provide password' : null,
                       onSaved: (value) => _password = value,
                       obscureText: true,
                       decoration: InputDecoration(
