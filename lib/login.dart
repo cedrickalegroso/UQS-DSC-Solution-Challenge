@@ -78,8 +78,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       child: Form(
                         key: _formKey,
-                        child: ListView(
-                          shrinkWrap: true,
+                        child: Column(
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -136,12 +135,9 @@ class _AuthPageState extends State<AuthPage> {
                                     dynamic result = await _auth.signInEmail(
                                         _email, _password);
                                     if (result == null) {
-                                      setState(() {
-                                        loading = false;
-                                      });
+                                      setState(() => loading = false);
                                     } else {
-                                      Navigator.of(context)
-                                          .popAndPushNamed('/home');
+                                      Navigator.of(context).pushReplacementNamed('/home');
                                     }
                                   }
                                 },
@@ -153,12 +149,11 @@ class _AuthPageState extends State<AuthPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height:10),
+                            SizedBox(height: 10),
                             Container(
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/signup');
+                                  Navigator.of(context).pushNamed('/signup');
                                 },
                                 child: Text(
                                   'New user? Click here to Sign up',

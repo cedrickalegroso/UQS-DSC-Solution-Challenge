@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uqsbeta/dbaseService.dart';
 import 'package:uqsbeta/models/user.dart';
 
 class AuthService {
@@ -42,28 +42,30 @@ class AuthService {
     }
   }
 
+//@cedrick gin modify ko lang imo gin ubra na sign up func hehe
   //sign up
   // called by on press submit
-  Future signUp(email, password) async {
+  Future signUp(String email,String password, String name, String phoneNumber) async {
     try {
       // try to create the user
       AuthResult credentials = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = credentials.user;
-      updateProfile(user);
-      return _userFromFireBaseUser(
-          user); // call the Update profile so we can inject the data on database
+      await DatabaseService(uid: user.uid)
+          .updateUserData(name, phoneNumber, user.email);
+      //updateProfile(user);// call the Update profile so we can inject the data on database
+      return _userFromFireBaseUser(user);
     } catch (e) {
       // catch the error
       print(e); // print the error
     }
   }
 
-  void updateProfile(user) {
+  /*void updateProfile(user) {
     Firestore.instance.collection('users').add({
       // add the uid and the email in the firestore document ref
       'uid': user.uid,
       'email': user.email
     });
-  }
+  }*/ 
 }

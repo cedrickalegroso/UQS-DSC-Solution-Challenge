@@ -13,6 +13,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final AuthService _auth = AuthService();
   String _password = '';
   String _email = '';
+  String _name = '';
+  String _phoneNumber = '';
   bool loading = false;
 
   @override
@@ -79,8 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       child: Form(
                         key: _formKey,
-                        child: ListView(
-                          shrinkWrap: true,
+                        child: Column(
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -91,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ? 'Email address is required'
                                     : null,
                                 onChanged: (val) {
-                                  setState(() => _email = val);
+                                  setState(() => _email = val.trim());
                                 },
                                 onSaved: (value) => _email = value.trim(),
                                 keyboardType: TextInputType.emailAddress,
@@ -112,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ? 'Password is required'
                                     : null,
                                 onChanged: (val) {
-                                  setState(() => _password = val);
+                                  setState(() => _password = val.trim());
                                 },
                                 onSaved: (value) => _password = value.trim(),
                                 obscureText: true,
@@ -123,6 +124,46 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                             SizedBox(height: 8),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                autofocus: false,
+                                textAlign: TextAlign.left,
+                                validator: (value) => value.isEmpty
+                                    ? 'Please enter complete name'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() => _name = val);
+                                },
+                                onSaved: (value) => _name = value,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: 'Complete name',
+                                  labelText: "Complete name",
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                autofocus: false,
+                                textAlign: TextAlign.left,
+                                validator: (value) => value.isEmpty
+                                    ? 'Please enter phone number'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() => _phoneNumber = val);
+                                },
+                                onSaved: (value) => _phoneNumber = value,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: '11 digit phone number',
+                                  labelText: "Phone number",
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                              ),
+                            ),
                             Container(
                               padding: EdgeInsets.only(left: 100, right: 100),
                               child: RaisedButton(
@@ -134,8 +175,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     setState(() {
                                       loading = true;
                                     });
-                                    dynamic result =
-                                        await _auth.signUp(_email, _password);
+                                    dynamic result = await _auth.signUp(
+                                        _email, _password, _name, _phoneNumber);
                                     if (result == null) {
                                       setState(() {
                                         loading = false;

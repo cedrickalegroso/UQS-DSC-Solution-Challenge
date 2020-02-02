@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uqsbeta/authservice.dart';
+import 'package:uqsbeta/login.dart';
 
 class Homepage extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -52,9 +53,9 @@ class Homepage extends StatelessWidget {
 }
 
 class CostumListile extends StatelessWidget {
-  IconData icon;
-  String text;
-  Function onTop;
+  final IconData icon;
+  final String text;
+  final Function onTop;
   CostumListile(this.icon, this.text, this.onTop);
   @override
   Widget build(BuildContext context) {
