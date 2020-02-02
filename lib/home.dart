@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:uqsbeta/authservice.dart';
-import 'package:uqsbeta/login.dart';
 
 class Homepage extends StatelessWidget {
   final AuthService _auth = AuthService();
