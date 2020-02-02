@@ -9,14 +9,14 @@ import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
-
 class MyApp extends StatelessWidget {
   //This is the root widget
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value( //wrapped the root widget to grant the whole widget tree access to the data provided by the stream
+    return StreamProvider<User>.value(
+      //wrapped the root widget to grant the whole widget tree access to the data provided by the stream
       value: AuthService().user,
-      child: MaterialApp( 
+      child: MaterialApp(
         routes: <String, WidgetBuilder>{
           '/login': (_) => AuthPage(),
           '/signup': (_) => SignUpPage(),
@@ -27,10 +27,9 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
           primaryColor: Colors.lightBlue[800],
           accentColor: Colors.redAccent[300],
-          ),
-          home: Splashscreen(),
+        ),
+        home: Splashscreen(),
       ),
     );
   }
 }
-
