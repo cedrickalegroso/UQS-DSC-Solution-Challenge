@@ -64,7 +64,7 @@ class AuthService {
       return _userFromFireBaseUser(user);
     } catch (e) {
       // catch the error
-      print(e); // print the error
+      print(e.toString()); // print the error
     }
   }
 }

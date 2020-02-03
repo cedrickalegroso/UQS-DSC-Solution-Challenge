@@ -50,7 +50,7 @@ class _HomepageState extends State<Homepage> {
             CostumListile(Icons.lock, 'Log out', () async {
               //calls sign out function from AuthService()
               await _auth.signOut();
-              Navigator.of(context).pushReplacementNamed('/login');
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
             }),
           ],
         )),

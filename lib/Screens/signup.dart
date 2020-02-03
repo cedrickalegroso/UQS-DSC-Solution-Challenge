@@ -184,8 +184,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       });
                                     } else {
                                       //proceed to log in page if sign up is successful
-                                      Navigator.of(context)
-                                          .pushReplacementNamed('/login');
+                                      Navigator.of(context).popAndPushNamed('/login');
                                     }
                                   }
                                 },
