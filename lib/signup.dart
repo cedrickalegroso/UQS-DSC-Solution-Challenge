@@ -156,7 +156,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   setState(() => _phoneNumber = val);
                                 },
                                 onSaved: (value) => _phoneNumber = value,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   hintText: '11 digit phone number',
                                   labelText: "Phone number",
