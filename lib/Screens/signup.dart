@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uqsbeta/authservice.dart';
-import 'package:uqsbeta/loading.dart';
+import 'package:uqsbeta/Miscellaneous/loading.dart';
+import 'package:uqsbeta/Services/authservice.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -8,8 +8,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _formKey = GlobalKey<FormState>();
-
+  //used for form validation
+  final _formKey = GlobalKey<FormState>(); 
+  //creating an instance of the class AuthService
   final AuthService _auth = AuthService();
   String _password = '';
   String _email = '';
@@ -171,10 +172,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 onPressed: () async {
+                                  //using the built in func of validating forms, this returns false if form is invalid
                                   if (_formKey.currentState.validate()) {
-                                    setState(() {
-                                      loading = true;
-                                    });
+                                    setState(() => loading = true);
+                                    //call the signup function from AuthService()
                                     dynamic result = await _auth.signUp(
                                         _email, _password, _name, _phoneNumber);
                                     if (result == null) {
@@ -182,6 +183,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         loading = false;
                                       });
                                     } else {
+                                      //proceed to log in page if sign up is successful
                                       Navigator.of(context)
                                           .pushReplacementNamed('/login');
                                     }

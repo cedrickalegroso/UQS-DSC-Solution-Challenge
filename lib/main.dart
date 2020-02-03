@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:uqsbeta/Splashscreen.dart';
-import 'package:uqsbeta/authservice.dart';
+import 'package:uqsbeta/Miscellaneous/Splashscreen.dart';
+import 'package:uqsbeta/Models/route.dart';
+import 'package:uqsbeta/Services/authservice.dart';
 import 'package:uqsbeta/models/user.dart';
-import 'package:uqsbeta/route.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
+        //generates a predefined route
         onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

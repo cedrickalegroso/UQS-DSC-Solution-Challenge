@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:uqsbeta/Miscellaneous/customlisttile.dart';
+import 'package:uqsbeta/Services/authservice.dart';
 //import 'package:provider/provider.dart';
-import 'package:uqsbeta/authservice.dart';
-import 'package:uqsbeta/customlisttile.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -48,6 +48,7 @@ class _HomepageState extends State<Homepage> {
             CostumListile(Icons.settings, 'Settings', () => {}),
             CostumListile(Icons.help, 'Help', () => {}),
             CostumListile(Icons.lock, 'Log out', () async {
+              //calls sign out function from AuthService()
               await _auth.signOut();
               Navigator.of(context).pushReplacementNamed('/login');
             }),
