@@ -15,13 +15,26 @@ class _AuthPageState extends State<AuthPage> {
   String _password = '';
   String _email = '';
   bool loading = false;
+   
+  //show snackbar method
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  _showSnackBar() {
+    final snackBar = SnackBar(
+            content: Text('Error signing in. Please try again', style: TextStyle(fontSize: 15.0),),
+            duration: new Duration(seconds: 5),
+            backgroundColor: Colors.red,
+    );
+
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     // magwa ang loading screen instead sang scaffold if loading is set to true
     // @carl gin update ko dire nga part gin kuha ko na ang appbar kay pwedi ya ma click pabalik sa Screensplash
-    return loading
-        ? Loading()
-        : Scaffold(
+
+    return Scaffold(
+            key: _scaffoldKey,
             resizeToAvoidBottomPadding: true,
             backgroundColor: Colors.lightBlueAccent,
             body: Stack(
@@ -34,11 +47,9 @@ class _AuthPageState extends State<AuthPage> {
                         flex: 5,
                         child: Container(
                           child: Column(
-                            
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(padding: EdgeInsets.only(top: 50.0)),
- 
                               Text(
                                 'UQS',
                                 style: TextStyle(
@@ -160,6 +171,8 @@ class _AuthPageState extends State<AuthPage> {
                                         if (result == null) {
                                           //set loading to false to return to sign in page if user fails to sign in
                                           setState(() => loading = false);
+                                          // call the snackbar and pass the error message as a param then show error message
+                                           _showSnackBar();
                                         } else {
                                           //proceeds to homepage otherwise
                                           Navigator.of(context)
@@ -202,3 +215,4 @@ class _AuthPageState extends State<AuthPage> {
             ));
   }
 }
+
