@@ -1,8 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:splashscreen/splashscreen.dart';
-import 'package:uqsbeta/wrapper.dart';
 
 class Splashscreen extends StatefulWidget {
   @override
@@ -11,10 +8,9 @@ class Splashscreen extends StatefulWidget {
 
 // new Splashscreen
 class _SplashscreenState extends State<Splashscreen> {
-
   void initState() {
     super.initState(); // @carl after 5secs ma call sya sang router nga wrapper
-    Timer(Duration(seconds: 5),  ()=> Navigator.pushNamed(context, '/wrapper') );
+    Timer(Duration(seconds: 5), () => Navigator.pushNamed(context, '/wrapper'));
   }
 
   @override
@@ -35,7 +31,7 @@ class _SplashscreenState extends State<Splashscreen> {
                   "assets/uqslogo.png",
                   scale: 20.0,
                 ),
-               /* Padding(padding: EdgeInsets.only(top: 20.0)),
+                /* Padding(padding: EdgeInsets.only(top: 20.0)),
                 Text(
                   "Unified Queueing System",
                   style: TextStyle(
@@ -50,7 +46,9 @@ class _SplashscreenState extends State<Splashscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                CircularProgressIndicator(backgroundColor: Colors.white,),
+                CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ),
                 Padding(padding: EdgeInsets.only(bottom: 10.0)),
                 Text(
                   'Long waiting is a thing in the past',
