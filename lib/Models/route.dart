@@ -11,6 +11,8 @@ class RouteGenerator {
     //final args = settings.arguments; //to be used if passing of arguments during navigation is required
 
     switch (settings.name) {
+       case '/wrapper': // @carl gin add ko di kay from splashscreen after 5 seconds ma navigate sya sa wrapper hehe
+        return MaterialPageRoute(builder: (_) => Wrapper());
       case '/login':
         return MaterialPageRoute(builder: (_) => AuthPage());
       case '/signup':

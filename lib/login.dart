@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uqsbeta/services/authservice.dart';
 import 'package:uqsbeta/Miscellaneous/loading.dart';
-import 'package:uqsbeta/Services/authservice.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -8,16 +8,14 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  //used for form validation
   final _formKey = GlobalKey<FormState>();
-  //creating an instance of the class AuthService
+
   final AuthService _auth = AuthService();
   String _password = '';
   String _email = '';
   bool loading = false;
   @override
   Widget build(BuildContext context) {
-    // magwa ang loading screen instead sang scaffold if loading is set to true
     return loading
         ? Loading()
         : Scaffold(
