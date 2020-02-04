@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:uqsbeta/authservice.dart';
-import 'package:uqsbeta/loading.dart';
+import 'package:uqsbeta/Miscellaneous/loading.dart';
+import 'package:uqsbeta/Services/authservice.dart';
 
-class SignUpPage extends StatefulWidget {
+class AuthPage extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _AuthPageState createState() => _AuthPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _AuthPageState extends State<AuthPage> {
+  //used for form validation
   final _formKey = GlobalKey<FormState>();
-
+  //creating an instance of the class AuthService
   final AuthService _auth = AuthService();
   String _password = '';
   String _email = '';
-  String _name = '';
-  String _phoneNumber = '';
   bool loading = false;
-
   @override
   Widget build(BuildContext context) {
+    // magwa ang loading screen instead sang scaffold if loading is set to true
     return loading
         ? Loading()
         : Scaffold(
@@ -44,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: <Widget>[
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -61,7 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Text(
-                            'Sign up below',
+                            'Long waiting time is a thing in the past. Come to your service when it\'s your turn.',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -84,7 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Column(
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: TextFormField(
                                 autofocus: false,
                                 textAlign: TextAlign.left,
@@ -99,13 +98,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                 decoration: InputDecoration(
                                   hintText: 'email@gmail.com',
                                   labelText: "Email Address",
-                                  contentPadding: EdgeInsets.all(8),
+                                  contentPadding: EdgeInsets.all(6),
                                 ),
                               ),
                             ),
                             SizedBox(height: 8),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: TextFormField(
                                 autofocus: false,
                                 textAlign: TextAlign.left,
@@ -113,57 +112,17 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ? 'Password is required'
                                     : null,
                                 onChanged: (val) {
-                                  setState(() => _password = val.trim());
+                                  setState(() => _password = val);
                                 },
                                 onSaved: (value) => _password = value.trim(),
                                 obscureText: true,
                                 decoration: InputDecoration(
                                     hintText: '6-12 characters',
                                     labelText: "Password",
-                                    contentPadding: EdgeInsets.all(8)),
+                                    contentPadding: EdgeInsets.all(6)),
                               ),
                             ),
                             SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                autofocus: false,
-                                textAlign: TextAlign.left,
-                                validator: (value) => value.isEmpty
-                                    ? 'Please enter complete name'
-                                    : null,
-                                onChanged: (val) {
-                                  setState(() => _name = val);
-                                },
-                                onSaved: (value) => _name = value,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  hintText: 'Complete name',
-                                  labelText: "Complete name",
-                                  contentPadding: EdgeInsets.all(8),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                autofocus: false,
-                                textAlign: TextAlign.left,
-                                validator: (value) => value.isEmpty
-                                    ? 'Please enter phone number'
-                                    : null,
-                                onChanged: (val) {
-                                  setState(() => _phoneNumber = val);
-                                },
-                                onSaved: (value) => _phoneNumber = value,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  hintText: '11 digit phone number',
-                                  labelText: "Phone number",
-                                  contentPadding: EdgeInsets.all(8),
-                                ),
-                              ),
-                            ),
                             Container(
                               padding: EdgeInsets.only(left: 100, right: 100),
                               child: RaisedButton(
@@ -171,31 +130,45 @@ class _SignUpPageState extends State<SignUpPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 onPressed: () async {
+                                  //using the built in func of validating forms, this returns false if form is invalid
                                   if (_formKey.currentState.validate()) {
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                    dynamic result = await _auth.signUp(
-                                        _email, _password, _name, _phoneNumber);
+                                    //set loading to true to show loading screen while waiting for the result from firebaseauth
+                                    setState(() => loading = true);
+                                    //call the sign in function under AuthService()
+                                    dynamic result = await _auth.signInEmail(
+                                        _email, _password);
                                     if (result == null) {
-                                      setState(() {
-                                        loading = false;
-                                      });
+                                      //set loading to false to return to sign in page if user fails to sign in
+                                      setState(() => loading = false);
                                     } else {
+                                      //proceeds to homepage otherwise
                                       Navigator.of(context)
-                                          .pushReplacementNamed('/login');
+                                          .pushReplacementNamed('/home');
                                     }
                                   }
                                 },
                                 child: Text(
-                                  'Sign Up',
+                                  'Login',
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
-                            SizedBox(height: 8),
+                            SizedBox(height: 10),
+                            Container(
+                              child: GestureDetector(
+                                //brings the user to the signup page when tapped
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/signup');
+                                },
+                                child: Text(
+                                  'New user? Click here to Sign up',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8)
                           ],
                         ),
                       ),
@@ -203,6 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
               ),
-            ));
+            ),
+          );
   }
 }
