@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return new SplashScreen(
       title: new Text(
-        'Unified Qeueing System',
+        'Unified Qeueing Systems',
         style: new TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.grey),
       ),
