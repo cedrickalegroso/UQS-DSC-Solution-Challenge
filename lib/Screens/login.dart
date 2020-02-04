@@ -18,6 +18,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     // magwa ang loading screen instead sang scaffold if loading is set to true
+    // @carl gin update ko dire nga part gin kuha ko na ang appbar kay pwedi ya ma click pabalik sa Screensplash
     return loading
         ? Loading()
         : Scaffold(
