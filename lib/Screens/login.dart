@@ -14,11 +14,40 @@ class _AuthPageState extends State<AuthPage> {
   final AuthService _auth = AuthService();
   String _password = '';
   String _email = '';
+<<<<<<< Updated upstream
   bool loading = false;
+=======
+
+  //show snackbar method
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  _showSnackBar() {
+    final snackBar = SnackBar(
+      content: Text(
+        'Error signing in. Please try again',
+        style: TextStyle(fontSize: 15.0),
+      ),
+      duration: new Duration(seconds: 5),
+      backgroundColor: Colors.red,
+    );
+
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+//func for showing loading screen
+  void _onLoading() {
+    //uses the built in func for displaying a dialog widget
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Loading();
+        });
+  }
+
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
-    // magwa ang loading screen instead sang scaffold if loading is set to true
     // @carl gin update ko dire nga part gin kuha ko na ang appbar kay pwedi ya ma click pabalik sa Screensplash
+<<<<<<< Updated upstream
     return loading
         ? Loading()
         : Scaffold(
@@ -26,10 +55,43 @@ class _AuthPageState extends State<AuthPage> {
             backgroundColor: Colors.lightBlueAccent,
             body: Stack(
               fit: StackFit.expand,
+=======
+    return Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomPadding: true,
+        backgroundColor: Colors.lightBlueAccent,
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+>>>>>>> Stashed changes
               children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Expanded(
+                    flex: 5,
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(top: 50.0)),
+                          Text(
+                            'UQS',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    )),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: SingleChildScrollView(
+                child: Column(
                   children: <Widget>[
+<<<<<<< Updated upstream
                     Expanded(
                         flex: 5,
                         child: Container(
@@ -55,36 +117,91 @@ class _AuthPageState extends State<AuthPage> {
                   alignment: Alignment.bottomLeft,
                   child: SingleChildScrollView(
                     child: Column(
+=======
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+>>>>>>> Stashed changes
                       children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Text(
+                            'Welcome',
+                            style: TextStyle(
+                              wordSpacing: 3,
+                              color: Colors.white,
+                              fontSize: 45,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Text(
+                            'Long waiting time is a thing in the past. Come to your service when it\'s your turn.',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                      ],
+                    ),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      margin: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        color: Colors.white,
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
                           children: <Widget>[
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
-                              child: Text(
-                                'Welcome',
-                                style: TextStyle(
-                                  wordSpacing: 3,
-                                  color: Colors.white,
-                                  fontSize: 45,
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                autofocus: false,
+                                textAlign: TextAlign.left,
+                                validator: (value) => value.isEmpty
+                                    ? 'Email address is required'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() => _email = val.trim());
+                                },
+                                onSaved: (value) => _email = value.trim(),
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  hintText: 'email@gmail.com',
+                                  labelText: "Email Address",
+                                  contentPadding: EdgeInsets.all(6),
                                 ),
                               ),
                             ),
                             SizedBox(height: 8),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
-                              child: Text(
-                                'Long waiting time is a thing in the past. Come to your service when it\'s your turn.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
+                              padding: const EdgeInsets.all(10.0),
+                              child: TextFormField(
+                                autofocus: false,
+                                textAlign: TextAlign.left,
+                                validator: (value) => value.isEmpty
+                                    ? 'Password is required'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() => _password = val);
+                                },
+                                onSaved: (value) => _password = value.trim(),
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                    hintText: '6-12 characters',
+                                    labelText: "Password",
+                                    contentPadding: EdgeInsets.all(6)),
                               ),
                             ),
                             SizedBox(height: 8),
+<<<<<<< Updated upstream
                           ],
                         ),
                         Container(
@@ -180,25 +297,68 @@ class _AuthPageState extends State<AuthPage> {
                                   child: GestureDetector(
                                     //brings the user to the signup page when tapped
                                     onTap: () {
+=======
+                            Container(
+                              padding: EdgeInsets.only(left: 100, right: 100),
+                              child: RaisedButton(
+                                color: Colors.lightBlueAccent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                onPressed: () async {
+                                  //using the built in func of validating forms, this returns false if form is invalid
+                                  if (_formKey.currentState.validate()) {
+                                    //calls the loading func
+                                    _onLoading();
+                                    //call the sign in function under AuthService()
+                                    dynamic result = await _auth.signInEmail(
+                                        _email, _password);
+                                    if (result == null) {
+                                      //pops the loading dialog after a delay if result is null so it returns to the prev screen
+                                      await Future.delayed(
+                                          Duration(milliseconds: 75), () {
+                                        Navigator.pop(context);
+                                      });
+                                      // call the snackbar and pass the error message as a param then show error message
+                                      _showSnackBar();
+                                    } else {
+                                      //proceeds to homepage otherwise
+>>>>>>> Stashed changes
                                       Navigator.of(context)
-                                          .pushNamed('/signup');
-                                    },
-                                    child: Text(
-                                      'New user? Click here to Sign up',
-                                      textAlign: TextAlign.center,
-                                    ),
+                                          .pushReplacementNamed('/home');
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    color: Colors.white,
                                   ),
                                 ),
-                                SizedBox(height: 8)
-                              ],
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 10),
+                            Container(
+                              child: GestureDetector(
+                                //brings the user to the signup page when tapped
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/signup');
+                                },
+                                child: Text(
+                                  'New user? Click here to Sign up',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8)
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ));
+              ),
+            ),
+          ],
+        ));
   }
 }
