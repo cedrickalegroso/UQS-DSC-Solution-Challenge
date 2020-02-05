@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uqsbeta/models/user.dart';
 
-//@cedrick ari naman d ya ang tanan nga function concerning the database.
+//@cedrick ari naman d ya ang tanan nga function concerning the database for users.
 class DatabaseService {
   final String uid;
   DatabaseService({this.uid});

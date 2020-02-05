@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:uqsbeta/Miscellaneous/customlisttile.dart';
+import 'package:provider/provider.dart';
+import 'package:uqsbeta/Screens/Home/customlisttile.dart';
+import 'package:uqsbeta/Models/service.dart';
+import 'package:uqsbeta/Screens/Home/serviceList.dart';
 import 'package:uqsbeta/Services/authservice.dart';
-//import 'package:provider/provider.dart';
+import 'package:uqsbeta/Services/serviceDatabase.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -9,13 +12,14 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  
-
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    //final service = Provider.of<List<Service>>(context);
-    return new Scaffold(
+    //wrapped the whole scaffold widget with streamprovider to grant the whole widget tree access to the data provided by the stream
+    return StreamProvider<List<Service>>.value(
+      value: ServiceDatabase().service,
+      child: new Scaffold(
+        resizeToAvoidBottomPadding: true,
         appBar: new AppBar(
           title: Text(""),
           backgroundColor: Colors.lightBlueAccent,
@@ -50,25 +54,13 @@ class _HomepageState extends State<Homepage> {
             CostumListile(Icons.lock, 'Log out', () async {
               //calls sign out function from AuthService()
               await _auth.signOut();
-              Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
             }),
           ],
         )),
-        body: Container(
-          child: SingleChildScrollView(
-            child: Column(children: <Widget>[
-              SingleChildScrollView(
-                padding: EdgeInsets.all(10),
-                scrollDirection: Axis.horizontal,
-                /*child: ListView.builder(
-                  itemCount: service.length, //depende kung pila ka service ang ginapilahan ni user
-                  itemBuilder: (context, index) {
-                    return ServiceTile(service[index])
-                  }
-                )*/
-              )
-            ]),
-          ),
-        ));
+        body: Container(decoration: BoxDecoration(), child: ServiceList()),
+      ),
+    );
   }
 }
