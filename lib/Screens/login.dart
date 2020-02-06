@@ -202,7 +202,9 @@ class _AuthPageState extends State<AuthPage> {
                                 onTap: () {
                                   Navigator.of(context).pushNamed('/signup');
                                 },
-                                child: RichText(
+                                child: Text(
+                                  'New user? Click here to Sign up',
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ),
