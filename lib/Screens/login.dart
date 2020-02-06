@@ -205,7 +205,7 @@ class _AuthPageState extends State<AuthPage> {
                                 child: RichText(
                                   text: TextSpan(
                                      children: <TextSpan>[
-                                        TextSpan(text: 'New user? Click here',style: TextStyle(color:Colors.black,)),
+                                        TextSpan(text: 'New user? Click here to',style: TextStyle(color:Colors.black,)),
                                         TextSpan(text: ' Sign Up', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.lightBlueAccent,)),
                                      ]
                                    )
