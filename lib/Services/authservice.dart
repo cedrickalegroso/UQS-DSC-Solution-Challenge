@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uqsbeta/Services/userDatabase.dart';
-import 'package:uqsbeta/models/user.dart';
+import 'package:uqsbeta/Models/user.dart';
 
 //@cedrick gin compile ko na di tanan nga function concerning Firebase Authentication
 class AuthService {
