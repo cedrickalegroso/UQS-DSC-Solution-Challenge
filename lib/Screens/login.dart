@@ -29,6 +29,7 @@ class _AuthPageState extends State<AuthPage> {
 
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
+
 //func for showing loading screen
   void _onLoading() {
     //uses the built in func for displaying a dialog widget
@@ -45,40 +46,29 @@ class _AuthPageState extends State<AuthPage> {
     // @carl gin update ko dire nga part gin kuha ko na ang appbar kay pwedi ya ma click pabalik sa Screensplash
     return Scaffold(
         key: _scaffoldKey,
-        resizeToAvoidBottomPadding: true,
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.lightBlueAccent,
-        body: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                    flex: 5,
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.only(top: 50.0)),
-                          Text(
-                            'UQS',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Align(
+                //alignment: Alignment.topCenter,
+                child: Container(
+                    padding: EdgeInsets.only(top: 30.0, bottom: 200),
+                    child: Text(
+                      'UQS',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold),
                     )),
-              ],
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: SingleChildScrollView(
+              ),
+              Align(
+                //alignment: Alignment.bottomCenter,
                 child: Column(
                   children: <Widget>[
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      //mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
@@ -216,8 +206,8 @@ class _AuthPageState extends State<AuthPage> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }
