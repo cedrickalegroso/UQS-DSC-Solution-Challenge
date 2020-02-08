@@ -11,17 +11,23 @@ class _UserTileState extends State<UserTile> {
   @override
   Widget build(BuildContext context) {
     final UserData userData = Provider.of<UserData>(context);
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CircleAvatar(
-            radius: 40,
-            backgroundImage: NetworkImage('${userData.photoUrl}'),
-            backgroundColor: Colors.transparent,
-          ),
+          userData.photoUrl.isEmpty
+              ? Icon(
+                Icons.add_a_photo,
+                size: 50,
+                )
+              : CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage('${userData.photoUrl}'),
+                  backgroundColor: Colors.transparent,
+                ),
           _UserProfile(user: userData),
         ],
       ),
