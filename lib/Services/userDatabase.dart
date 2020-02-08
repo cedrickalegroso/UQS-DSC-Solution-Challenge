@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uqsbeta/models/user.dart';
+import 'package:uqsbeta/Models/user.dart';
 
 //@cedrick ari naman d ya ang tanan nga function concerning the database for users.
 class DatabaseService {
@@ -31,12 +31,13 @@ class DatabaseService {
 
 
 //creating an instance of the class UserData(ara sa user.dart sa models na folder) para istore ang data halin sa database
-  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
+ UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
       uid: uid,
       email: snapshot.data['email'],
       name: snapshot.data['name'],
       phoneNumber: snapshot.data['phonenumber'],
+      photoUrl: snapshot.data['photoUrl']
     );
   }
 
@@ -44,4 +45,19 @@ class DatabaseService {
   Stream<UserData> get userData {
     return userCollection.document(uid).snapshots().map(_userDataFromSnapshot);
   }
+
+ /* List<UserData> _userDataFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return UserData(
+        uid: uid,
+        email: doc.data['email'] ?? '',
+        name: doc.data['name'] ?? '',
+        phoneNumber: doc.data['phoneNumber'] ?? '',
+      );
+    }).toList();
+  }
+
+  Stream<List<UserData>> get user {
+    return userCollection.snapshots().map(_userDataFromSnapshot);
+  }*/
 }
