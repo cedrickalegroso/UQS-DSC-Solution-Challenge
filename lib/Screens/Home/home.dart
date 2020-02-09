@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uqsbeta/Models/user.dart';
+import 'package:uqsbeta/Screens/Home/activeTickets.dart';
 import 'package:uqsbeta/Screens/Home/customlisttile.dart';
 import 'package:uqsbeta/Models/service.dart';
+import 'package:uqsbeta/Screens/Home/notificationList.dart';
 import 'package:uqsbeta/Screens/Home/serviceList.dart';
 import 'package:uqsbeta/Screens/Home/userTile.dart';
 import 'package:uqsbeta/Services/authservice.dart';
@@ -26,62 +28,101 @@ class _HomepageState extends State<Homepage> {
     return MultiProvider(
       providers: [
         StreamProvider<List<Service>>.value(value: ServiceDatabase().service),
-        StreamProvider<UserData>.value(value: DatabaseService(uid: user.uid).userData), 
+        StreamProvider<UserData>.value(
+            value: DatabaseService(uid: user.uid).userData),
       ],
-      child: new Scaffold(
-        resizeToAvoidBottomPadding: true,
-        appBar: new AppBar(
-          title: Text(""),
-          backgroundColor: Colors.lightBlueAccent,
-          elevation: 0,
-        ),
-        //drawer
-        drawer: new Drawer(
-            child: new ListView(
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: <Color>[
-                Colors.lightBlueAccent,
-                Colors.lightBlue,
-                Colors.blueAccent,
-              ])),
-              child: UserTile(),
-            ),
-            CostumListile(Icons.person, 'Profile', () => {}),
-            CostumListile(Icons.notifications, 'Notification', () => {}),
-            CostumListile(Icons.settings, 'Settings', () => {}),
-            CostumListile(Icons.help, 'Help', () => {}),
-            CostumListile(Icons.lock, 'Log out', () async {
-              //calls sign out function from AuthService()
-              await _auth.signOut();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/login', (Route<dynamic> route) => false);
-            }),
-          ],
-        )),
-        body: Container(decoration: BoxDecoration(), child: ServiceList()),
+      child: SafeArea(
+        child: new Scaffold(
+            appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+            resizeToAvoidBottomPadding: false,
+            backgroundColor: Colors.lightBlueAccent,
+            drawer: Drawer(child: DrawerList(auth: _auth)),
+            body: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ListTile(
+                  leading:
+                      Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
+                  title: Text(
+                    "Active Tickets",
+                    style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlueAccent[100]),
+                  ),
+                ),
+                Flexible(flex: 2, child: Tickets()),
+                ListTile(
+                  leading:
+                      Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
+                  title: Text(
+                    "Notifications",
+                    style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlueAccent[100]),
+                  ),
+                ),
+                Flexible(flex: 3, child: NotifList()),
+                ListTile(
+                  leading:
+                      Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
+                  title: Text(
+                    "UQS Supported Services",
+                    style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlueAccent[100]),
+                  ),
+                ),
+                Container(
+                    padding: EdgeInsets.all(5),
+                    height: 150,
+                    color: Colors.white,
+                    child: ServiceList()),
+              ],
+            )),
       ),
     );
   }
 }
 
-class Asdf extends StatelessWidget {
-  const Asdf({
+class DrawerList extends StatelessWidget {
+  const DrawerList({
     Key key,
-  }) : super(key: key);
+    @required AuthService auth,
+  })  : _auth = auth,
+        super(key: key);
+
+  final AuthService _auth;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
+    return ListView(
       children: <Widget>[
-        Material(
-          borderRadius: BorderRadius.all(Radius.circular(50.0)),
-          elevation: 10,
+        DrawerHeader(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: <Color>[
+            Colors.lightBlueAccent,
+            Colors.lightBlue,
+            Colors.blueAccent,
+          ])),
+          child: UserTile(),
         ),
-        Text("Flutter", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+        CostumListile(Icons.person, 'Profile', () => {}),
+        CostumListile(Icons.notifications, 'Notification', () => {}),
+        CostumListile(Icons.settings, 'Settings', () => {}),
+        CostumListile(Icons.help, 'Help', () => {}),
+        CostumListile(Icons.lock, 'Log out', () async {
+          //calls sign out function from AuthService()
+          await _auth.signOut();
+          Navigator.of(context).pushReplacementNamed('/login');
+        }),
       ],
-    ));
+    );
   }
 }

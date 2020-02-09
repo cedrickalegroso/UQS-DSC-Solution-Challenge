@@ -10,7 +10,7 @@ class Splashscreen extends StatefulWidget {
 class _SplashscreenState extends State<Splashscreen> {
   void initState() {
     super.initState(); // @carl after 5secs ma call sya sang router nga wrapper
-    Timer(Duration(seconds: 5), () => Navigator.pushNamed(context, '/wrapper'));
+    Timer(Duration(seconds: 5), () => Navigator.of(context).pushReplacementNamed('/wrapper'));
   }
 
   @override
