@@ -26,8 +26,26 @@ class ServiceDatabase {
     }).toList();
   }
 
-  //get service stream from the database
+  //creating an instance of the class Service(ara sa models na folder) para istore ang data halin sa database
+  Service _serviceDataFromSnapshot(DocumentSnapshot snapshot) {
+    return Service(
+        uid: uid,
+        email: snapshot.data['email'],
+        displayName: snapshot.data['displayName'],
+        phoneNumber: snapshot.data['phoneNumber'],
+        photoUrl: snapshot.data['photoUrl']);
+  }
+
+  //get service stream from the database (returns a list of services)
   Stream<List<Service>> get service {
     return serviceCollection.snapshots().map(_serviceListFromSnapshot);
+  }
+
+  //get serviceData stream from the database (returns specific data of a service)
+  Stream<Service> get serviceData {
+    return serviceCollection
+        .document(uid)
+        .snapshots()
+        .map(_serviceDataFromSnapshot);
   }
 }
