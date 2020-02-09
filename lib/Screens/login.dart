@@ -44,6 +44,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     // @carl gin update ko dire nga part gin kuha ko na ang appbar kay pwedi ya ma click pabalik sa Screensplash
+    //@cedrick pwede siya dyapon ma back pabalik sa splashscreen gamit ang navigational button sa dalom amo na gin update ko liwat.
     return WillPopScope(
       onWillPop: () => Future.value(false), //prevents going back to prev page
           child: Scaffold(
