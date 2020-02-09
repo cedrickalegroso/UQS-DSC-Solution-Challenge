@@ -8,28 +8,18 @@ class ServiceTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Card(
-        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-        child: ListTile(
-          leading: Padding(
-            padding: EdgeInsets.all(2),
-            //display an image obtained online (e.g. image uploaded when registering)
-            child: Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage('${service.photoUrl}'),
-                  )),
-            ),
-          ),
-          //display the name of the service as text
-          title: Text(service.displayName),
-          //display the phoneNumber of the service as text
-          subtitle: Text(service.phoneNumber),
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        color: Colors.lightBlueAccent,
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage('${service.photoUrl}'),
+              )),
         ),
       ),
     );
