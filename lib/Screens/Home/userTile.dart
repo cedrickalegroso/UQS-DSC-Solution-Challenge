@@ -18,7 +18,7 @@ class _UserTileState extends State<UserTile> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          userData.photoUrl.isEmpty
+          userData.photoUrl == ''
               ? Icon(
                 Icons.add_a_photo,
                 size: 50,
