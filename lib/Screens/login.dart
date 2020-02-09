@@ -188,6 +188,23 @@ class _AuthPageState extends State<AuthPage> {
                                   ),
                                 ),
                               ),
+                            SizedBox(height: 10),
+                            Container(
+                              child: GestureDetector(
+                                //brings the user to the signup page when tapped
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/signup');
+                                },
+                                child: RichText(
+                                  text: TextSpan(
+                                     children: <TextSpan>[
+                                        TextSpan(text: 'New user? Click here to',style: TextStyle(color:Colors.black,)),
+                                        TextSpan(text: ' Sign Up', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.lightBlueAccent,)),
+                                     ],
+                                   ),
+                                 ),
+                              ),
+                            ),
                               SizedBox(height: 10),
                               Container(
                                 child: GestureDetector(

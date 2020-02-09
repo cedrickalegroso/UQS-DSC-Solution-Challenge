@@ -30,7 +30,7 @@ class DatabaseService {
   }
 
 //creating an instance of the class UserData(ara sa user.dart sa models na folder) para istore ang data halin sa database
- UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
+  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
         uid: uid,
         email: snapshot.data['email'],
