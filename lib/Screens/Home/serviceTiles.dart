@@ -5,13 +5,15 @@ class ServiceTile extends StatelessWidget {
   final Service service;
   ServiceTile({this.service});
 
+  
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return new Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
+          onTap: () => {},
           leading: Padding(
             padding: EdgeInsets.all(2),
             //display an image obtained online (e.g. image uploaded when registering)
@@ -33,5 +35,6 @@ class ServiceTile extends StatelessWidget {
         ),
       ),
     );
+        
   }
 }
