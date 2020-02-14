@@ -210,10 +210,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                   });
                                   // call the snackbar and pass the error message as a param then show error message
                                   _showSnackBar();
-                                } else {
-                                  //proceed to log in page if sign up is successful
-                                  Navigator.of(context)
-                                      .popAndPushNamed('/login');
                                 }
                               }
                             },

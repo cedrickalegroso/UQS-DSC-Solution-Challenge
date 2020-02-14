@@ -182,7 +182,7 @@ class _AuthPageState extends State<AuthPage> {
                                           _showSnackBar();
                                         } else {
                                           //proceeds to homepage otherwise
-                                          Navigator.of(context).pushReplacementNamed('/home');
+                                          Navigator.pop(context);
                                         }
                                       }
                                     },

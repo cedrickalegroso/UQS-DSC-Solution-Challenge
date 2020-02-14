@@ -128,7 +128,7 @@ class DrawerList extends StatelessWidget {
         CostumListile(Icons.lock, 'Log out', () async {
           //calls sign out function from AuthService()
           await _auth.signOut();
-          Navigator.of(context).pushNamedAndRemoveUntil('/wrapper', (Route route) => false);
+          Navigator.pop(context);
         }),
       ],
     );
