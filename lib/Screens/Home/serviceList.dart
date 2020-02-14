@@ -20,7 +20,7 @@ class _ServiceListState extends State<ServiceList> {
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 2, mainAxisSpacing: 1,childAspectRatio: 1.25),
       itemBuilder: (context, index) {
-        return ServiceTile(service: services[2]);
+        return ServiceTile(service: services[index]);
       },
     );
   }

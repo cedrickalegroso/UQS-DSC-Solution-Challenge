@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
-        initialRoute: '/wrapper',
+        //initialRoute: '/wrapper',
         //generates a predefined route
         onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,

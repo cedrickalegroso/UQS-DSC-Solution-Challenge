@@ -59,7 +59,7 @@ class AuthService {
       //create an instance of the class DatabaseService using the uid as a parameter,
       //then use the function under this class to update userdata
       await DatabaseService(uid: user.uid)
-          .updateUserData(name, phoneNumber, user.email);
+          .updateUserData(name, phoneNumber, user.email, '');
 
       return _userFromFireBaseUser(user);
     } catch (e) {

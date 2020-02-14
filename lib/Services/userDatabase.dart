@@ -21,11 +21,13 @@ class DatabaseService {
     String name,
     String phoneNumber,
     String email,
+    String photoUrl
   ) async {
     return await userCollection.document(uid).setData({
       'name': name,
       'phonenumber': phoneNumber,
       'email': email,
+      'photoUrl': photoUrl,
     });
   }
 
@@ -33,10 +35,10 @@ class DatabaseService {
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
         uid: uid,
-        email: snapshot.data['email'],
-        name: snapshot.data['name'],
-        phoneNumber: snapshot.data['phonenumber'],
-        photoUrl: snapshot.data['photoUrl']);
+        email: snapshot.data['email'] ?? '',
+        name: snapshot.data['name'] ?? '',
+        phoneNumber: snapshot.data['phonenumber']  ?? '',
+        photoUrl: snapshot.data['photoUrl']?? '');
   }
 
 //listens to the stream para magkuha data kung kailangan

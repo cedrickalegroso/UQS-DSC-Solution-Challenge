@@ -12,33 +12,40 @@ import 'package:uqsbeta/Services/serviceDatabase.dart';
 import 'package:uqsbeta/Services/userDatabase.dart';
 
 class Homepage extends StatefulWidget {
+  final uid;
+  Homepage({this.uid});
   @override
-  _HomepageState createState() => _HomepageState();
+  _HomepageState createState() => _HomepageState(uid);
 }
 
 class _HomepageState extends State<Homepage> {
+  dynamic uid;
+
+  _HomepageState(this.uid);
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
     //create an instance based on the data from the stream
     //this is then used as parameter para mag set up sang stream para sa userData
-    final user = Provider.of<User>(context);
+   
 
     //wrapped the whole scaffold widget with streamprovider to grant the whole widget tree access to the data provided by the stream
     return MultiProvider(
       providers: [
         StreamProvider<List<Service>>.value(value: ServiceDatabase().service),
         StreamProvider<UserData>.value(
-            value: DatabaseService(uid: user.uid).userData),
+            value: DatabaseService(uid:uid).userData),
       ],
       child: SafeArea(
         child: new Scaffold(
-            appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-            resizeToAvoidBottomPadding: false,
+          extendBody: true,
+            appBar: PreferredSize(preferredSize: Size.fromHeight(20),child: AppBar(backgroundColor: Colors.transparent, elevation: 0)),
+            resizeToAvoidBottomPadding: true,
             backgroundColor: Colors.lightBlueAccent,
             drawer: Drawer(child: DrawerList(auth: _auth)),
             body: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 ListTile(
@@ -105,6 +112,7 @@ class DrawerList extends StatelessWidget {
     return ListView(
       children: <Widget>[
         DrawerHeader(
+          curve: Curves.fastOutSlowIn,
           decoration: BoxDecoration(
               gradient: LinearGradient(colors: <Color>[
             Colors.lightBlueAccent,
@@ -120,7 +128,7 @@ class DrawerList extends StatelessWidget {
         CostumListile(Icons.lock, 'Log out', () async {
           //calls sign out function from AuthService()
           await _auth.signOut();
-          Navigator.of(context).pushReplacementNamed('/login');
+          Navigator.of(context).pushNamedAndRemoveUntil('/wrapper', (Route route) => false);
         }),
       ],
     );

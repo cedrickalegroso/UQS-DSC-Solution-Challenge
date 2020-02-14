@@ -10,28 +10,32 @@ class UserTile extends StatefulWidget {
 class _UserTileState extends State<UserTile> {
   @override
   Widget build(BuildContext context) {
-    final UserData userData = Provider.of<UserData>(context);
+    final userData = Provider.of<UserData>(context);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          userData.photoUrl == ''
-              ? Icon(
-                Icons.add_a_photo,
-                size: 50,
-                )
-              : CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage('${userData.photoUrl}'),
-                  backgroundColor: Colors.transparent,
-                ),
-          _UserProfile(user: userData),
+          Expanded(flex: 1, child: _UserPhoto(user: userData)),
+          Expanded(flex: 2, child: _UserProfile(user: userData)),
         ],
       ),
     );
+  }
+}
+
+class _UserPhoto extends StatelessWidget {
+  final UserData user;
+  _UserPhoto({this.user});
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+            radius: 50,
+            backgroundImage: NetworkImage('${user.photoUrl}'),
+            backgroundColor: Colors.transparent,
+          );
   }
 }
 
@@ -47,17 +51,30 @@ class _UserProfile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            '${user.name}',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 22.0,
+          Flexible(
+            flex: 1,
+            child: Container(
+              child: Text(
+                '${user.name}',
+                softWrap: true,
+                maxLines: 1,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 22.0,
+                ),
+              ),
             ),
           ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
-          Text(
-            '${user.email}',
-            style: TextStyle(fontSize: 18.0),
+          Flexible(
+            flex: 1,
+            child: Container(
+              child: Text(
+                '${user.email}',
+                softWrap: true,
+                maxLines: 1,
+                style: TextStyle(fontSize: 18.0),
+              ),
+            ),
           ),
         ],
       ),
