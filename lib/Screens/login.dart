@@ -47,10 +47,12 @@ class _AuthPageState extends State<AuthPage> {
     //@cedrick pwede siya dyapon ma back pabalik sa splashscreen gamit ang navigational button sa dalom amo na gin update ko liwat.
     return WillPopScope(
       onWillPop: () => Future.value(false), //prevents going back to prev page
-      child: SafeArea( //para d mag overlap ang screen kag ang UI ka android
+      child: SafeArea(
+        //para d mag overlap ang screen kag ang UI ka android
         child: Scaffold(
             key: _scaffoldKey,
-            resizeToAvoidBottomInset: true,
+            //resizeToAvoidBottomInset: true,
+            resizeToAvoidBottomPadding: true,
             backgroundColor: Colors.lightBlueAccent,
             body: SingleChildScrollView(
               child: Column(
@@ -167,22 +169,14 @@ class _AuthPageState extends State<AuthPage> {
                                     onPressed: () async {
                                       //using the built in func of validating forms, this returns false if form is invalid
                                       if (_formKey.currentState.validate()) {
-                                        //calls the loading func
                                         _onLoading();
                                         //call the sign in function under AuthService()
                                         dynamic result = await _auth
                                             .signInEmail(_email, _password);
+                                        Navigator.pop(context);
                                         if (result == null) {
-                                          //pops the loading dialog after a delay if result is null so it returns to the prev screen
-                                          await Future.delayed(
-                                              Duration(milliseconds: 75), () {
-                                            Navigator.pop(context);
-                                          });
                                           // call the snackbar and pass the error message as a param then show error message
                                           _showSnackBar();
-                                        } else {
-                                          //proceeds to homepage otherwise
-                                          Navigator.pop(context);
                                         }
                                       }
                                     },
