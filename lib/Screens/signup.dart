@@ -202,14 +202,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 //call the signup function from AuthService()
                                 dynamic result = await _auth.signUp(
                                     _email, _password, _name, _phoneNumber);
+                                Navigator.pop(context);
                                 if (result == null) {
-                                  //pops the loading dialog after a delay if result is null so it returns to the prev screen
-                                  await Future.delayed(
-                                      Duration(milliseconds: 75), () {
-                                    Navigator.pop(context);
-                                  });
                                   // call the snackbar and pass the error message as a param then show error message
                                   _showSnackBar();
+                                } else {
+                                  Navigator.pop(context);
                                 }
                               }
                             },
