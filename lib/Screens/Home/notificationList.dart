@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NotifList extends StatefulWidget {
-  @override
-  _NotifListState createState() => _NotifListState();
-}
-
-class _NotifListState extends State<NotifList> {
+class NotifList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -13,7 +8,7 @@ class _NotifListState extends State<NotifList> {
       itemBuilder: (context, index) {
         return Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.fromLTRB(10,6,6,10),
+          margin: EdgeInsets.fromLTRB(10, 6, 6, 10),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(

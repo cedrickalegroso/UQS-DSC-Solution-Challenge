@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uqsbeta/Models/ticket.dart';
+import 'package:uqsbeta/Models/user.dart';
 import 'package:uqsbeta/Screens/Home/activeTickets.dart';
 import 'package:uqsbeta/Screens/Home/customlisttile.dart';
 import 'package:uqsbeta/Models/service.dart';
@@ -8,6 +10,7 @@ import 'package:uqsbeta/Screens/Home/serviceList.dart';
 import 'package:uqsbeta/Screens/Home/userTile.dart';
 import 'package:uqsbeta/Services/authservice.dart';
 import 'package:uqsbeta/Services/serviceDatabase.dart';
+import 'package:uqsbeta/Services/ticketDatabase.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -17,11 +20,12 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    final AuthService _auth = AuthService();
+    final User user = Provider.of<User>(context);
     //wrapped the whole scaffold widget with streamprovider to grant the whole widget tree access to the data provided by the stream
     return MultiProvider(
       providers: [
         StreamProvider<List<Service>>.value(value: ServiceDatabase().service),
+        StreamProvider<List<Ticket>>.value(value: TicketDatabase(ticketOwnerUid: user.uid).activeTickets),
       ],
       child: SafeArea(
         child: new Scaffold(
@@ -32,7 +36,7 @@ class _HomepageState extends State<Homepage> {
                     AppBar(backgroundColor: Colors.transparent, elevation: 0)),
             resizeToAvoidBottomPadding: true,
             backgroundColor: Colors.lightBlueAccent,
-            drawer: Drawer(child: DrawerList(auth: _auth)),
+            drawer: Drawer(child: DrawerList()),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,7 +53,7 @@ class _HomepageState extends State<Homepage> {
                         color: Colors.lightBlueAccent[100]),
                   ),
                 ),
-                Flexible(flex: 2, child: Tickets()),
+                Flexible(fit: FlexFit.tight, child: Tickets()),
                 ListTile(
                   leading:
                       Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
@@ -62,7 +66,7 @@ class _HomepageState extends State<Homepage> {
                         color: Colors.lightBlueAccent[100]),
                   ),
                 ),
-                Flexible(flex: 3, child: NotifList()),
+                Flexible(fit: FlexFit.loose, child: NotifList()),
                 ListTile(
                   leading:
                       Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
@@ -75,11 +79,10 @@ class _HomepageState extends State<Homepage> {
                         color: Colors.lightBlueAccent[100]),
                   ),
                 ),
-                Container(
-                    padding: EdgeInsets.all(5),
-                    height: 150,
-                    color: Colors.white,
-                    child: ServiceList()),
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Container(color: Colors.white, child: ServiceList()),
+                ),
               ],
             )),
       ),
@@ -88,14 +91,7 @@ class _HomepageState extends State<Homepage> {
 }
 
 class DrawerList extends StatelessWidget {
-  const DrawerList({
-    Key key,
-    @required AuthService auth,
-  })  : _auth = auth,
-        super(key: key);
-
-  final AuthService _auth;
-
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -123,3 +119,34 @@ class DrawerList extends StatelessWidget {
     );
   }
 }
+
+/*Future<bool> showAlertDialog(BuildContext context) async {
+  dynamic signout;
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("Ok"),
+    onPressed: () {Navigator.pop(context,true);},
+  );
+  Widget cancelButton = FlatButton(
+    child: Text("Cancel"),
+    onPressed: () {Navigator.pop(context,false);},
+  );
+  
+  // set up the AlertDialog
+  signout = AlertDialog(
+    title: Text("Signout"),
+    content: Text("Are you sure you want to signout?"),
+    actions: [
+      okButton,
+      cancelButton
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}*/

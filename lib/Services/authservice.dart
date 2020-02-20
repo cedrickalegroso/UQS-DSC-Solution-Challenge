@@ -14,7 +14,7 @@ class AuthService {
   }
 
   //set up a stream to listen for changes in authstate i.e. if user logged in or a user has logged out
-  Stream<User> get user {
+  Stream<User> get authState {
     //map out the stream and get the properties of the user from the database and passes it to the user object
     return _auth.onAuthStateChanged.map(_userFromFireBaseUser);
   }

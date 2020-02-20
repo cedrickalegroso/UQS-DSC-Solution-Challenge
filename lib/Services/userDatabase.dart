@@ -31,9 +31,9 @@ class DatabaseService {
     });
   }
 
-//creating an instance of the class UserData(ara sa user.dart sa models na folder) para istore ang data halin sa database
-  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return UserData(
+//creating an instance of the class User(ara sa user.dart sa models na folder) para istore ang data halin sa database
+  User _userDataFromSnapshot(DocumentSnapshot snapshot) {
+    return User(
         uid: uid,
         email: snapshot.data['email'] ?? '',
         name: snapshot.data['name'] ?? '',
@@ -42,14 +42,14 @@ class DatabaseService {
   }
 
 //listens to the stream para magkuha data kung kailangan
-  Stream<UserData> get userData {
+  Stream<User> get userData {
     return userCollection.document(uid).snapshots().map(_userDataFromSnapshot);
   }
 
 //incase need ta ang list sang mga users nga naka register
-  /* List<UserData> _userDataFromSnapshot(QuerySnapshot snapshot) {
+  /* List<User> _userDataFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      return UserData(
+      return User(
         uid: uid,
         email: doc.data['email'] ?? '',
         name: doc.data['name'] ?? '',
@@ -58,7 +58,7 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<List<UserData>> get user {
+  Stream<List<User>> get user {
     return userCollection.snapshots().map(_userDataFromSnapshot);
   }*/
 }

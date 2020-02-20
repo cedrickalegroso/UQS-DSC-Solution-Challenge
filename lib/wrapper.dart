@@ -13,7 +13,7 @@ class Wrapper extends StatelessWidget {
     //checking if user is logged in then return either authpage or homescreen
     //uses a streambuilder to build widgets according to the authentication state of the user
     return StreamBuilder<User>(
-      stream: authService.user,
+      stream: authService.authState,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final User user = snapshot.data;

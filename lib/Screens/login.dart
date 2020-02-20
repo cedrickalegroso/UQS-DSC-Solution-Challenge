@@ -10,8 +10,6 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   //used for form validation
   final _formKey = GlobalKey<FormState>();
-  //creating an instance of the class AuthService
-  final AuthService _auth = AuthService();
   String _password = '';
   String _email = '';
 
@@ -169,6 +167,7 @@ class _AuthPageState extends State<AuthPage> {
                                     onPressed: () async {
                                       //using the built in func of validating forms, this returns false if form is invalid
                                       if (_formKey.currentState.validate()) {
+                                        AuthService _auth = AuthService();
                                         _onLoading();
                                         //call the sign in function under AuthService()
                                         dynamic result = await _auth

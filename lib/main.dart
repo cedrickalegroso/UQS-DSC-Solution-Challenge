@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //wrapped the root widget with streamprovider to grant the whole widget tree access to the data provided by the stream
     return StreamProvider<User>.value(
-      value: AuthService().user,
+      value: AuthService().authState,
       child: MaterialApp(
         //initialRoute: '/wrapper',
         //generates a predefined route
