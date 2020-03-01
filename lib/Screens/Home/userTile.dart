@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uqsbeta/Miscellaneous/loading.dart';
@@ -25,8 +26,10 @@ class UserTile extends StatelessWidget {
                           child: userData.photoUrl.isNotEmpty
                               ? CircleAvatar(
                                   radius: 50,
-                                  backgroundImage:
-                                      NetworkImage('${userData.photoUrl}'),
+                                  child:
+                                      CachedNetworkImage(imageUrl: '${userData.photoUrl}',
+                                      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),),
                                   backgroundColor: Colors.transparent,
                                 )
                               : Icon(

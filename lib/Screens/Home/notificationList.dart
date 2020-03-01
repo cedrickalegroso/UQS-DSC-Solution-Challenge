@@ -16,7 +16,7 @@ class NotifList extends StatelessWidget {
                 offset: Offset(2, 2),
               )
             ],
-            borderRadius: BorderRadius.all(Radius.circular(25)),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
             color: Colors.lightBlueAccent[100],
           ),
           child: ListTile(

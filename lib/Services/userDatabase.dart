@@ -24,6 +24,7 @@ class DatabaseService {
     String photoUrl
   ) async {
     return await userCollection.document(uid).setData({
+      'uid' : uid,
       'name': name,
       'phonenumber': phoneNumber,
       'email': email,

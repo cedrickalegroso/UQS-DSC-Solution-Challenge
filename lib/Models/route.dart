@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uqsbeta/Screens/Home/home.dart';
+import 'package:uqsbeta/Screens/Home/profile.dart';
 import 'package:uqsbeta/Screens/login.dart';
 import 'package:uqsbeta/Screens/signup.dart';
 import 'package:uqsbeta/wrapper.dart';
@@ -19,6 +20,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SignUpPage());
       case '/home':
         return MaterialPageRoute(builder: (_) => Homepage());
+      case '/profile':
+        return MaterialPageRoute(builder: (_) => Profile());
       default:
         return MaterialPageRoute(builder: (_) => Wrapper());
     }

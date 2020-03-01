@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uqsbeta/Miscellaneous/loading.dart';
 import 'package:uqsbeta/Models/ticket.dart';
 import 'package:uqsbeta/Models/user.dart';
 import 'package:uqsbeta/Screens/Home/activeTickets.dart';
@@ -11,6 +12,7 @@ import 'package:uqsbeta/Screens/Home/userTile.dart';
 import 'package:uqsbeta/Services/authservice.dart';
 import 'package:uqsbeta/Services/serviceDatabase.dart';
 import 'package:uqsbeta/Services/ticketDatabase.dart';
+import 'package:uqsbeta/Services/userDatabase.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -22,71 +24,79 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     final User user = Provider.of<User>(context);
     //wrapped the whole scaffold widget with streamprovider to grant the whole widget tree access to the data provided by the stream
-    return MultiProvider(
-      providers: [
-        StreamProvider<List<Service>>.value(value: ServiceDatabase().service),
-        StreamProvider<List<Ticket>>.value(value: TicketDatabase(ticketOwnerUid: user.uid).activeTickets),
-      ],
-      child: SafeArea(
-        child: new Scaffold(
-            extendBody: true,
-            appBar: PreferredSize(
-                preferredSize: Size.fromHeight(20),
-                child:
-                    AppBar(backgroundColor: Colors.transparent, elevation: 0)),
-            resizeToAvoidBottomPadding: true,
-            backgroundColor: Colors.lightBlueAccent,
-            drawer: Drawer(child: DrawerList()),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                ListTile(
-                  leading:
-                      Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
-                  title: Text(
-                    "Active Tickets",
-                    style: TextStyle(
-                        fontSize: 20,
-                        letterSpacing: 2,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.lightBlueAccent[100]),
-                  ),
-                ),
-                Flexible(fit: FlexFit.tight, child: Tickets()),
-                ListTile(
-                  leading:
-                      Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
-                  title: Text(
-                    "Notifications",
-                    style: TextStyle(
-                        fontSize: 20,
-                        letterSpacing: 2,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.lightBlueAccent[100]),
-                  ),
-                ),
-                Flexible(fit: FlexFit.loose, child: NotifList()),
-                ListTile(
-                  leading:
-                      Icon(Icons.bookmark, color: Colors.lightBlueAccent[100]),
-                  title: Text(
-                    "UQS Supported Services",
-                    style: TextStyle(
-                        fontSize: 20,
-                        letterSpacing: 2,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.lightBlueAccent[100]),
-                  ),
-                ),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: Container(color: Colors.white, child: ServiceList()),
-                ),
-              ],
-            )),
-      ),
-    );
+    return user != null
+        ? MultiProvider(
+            providers: [
+              StreamProvider<List<Service>>.value(
+                  value: ServiceDatabase().service),
+              StreamProvider<List<Ticket>>.value(
+                  value:
+                      TicketDatabase(ticketOwnerUid: user.uid).activeTickets),
+              StreamProvider<User>.value(
+                  value: DatabaseService(uid: user.uid).userData)
+            ],
+            child: SafeArea(
+              child: new Scaffold(
+                  extendBody: true,
+                  appBar: PreferredSize(
+                      preferredSize: Size.fromHeight(25),
+                      child: AppBar(
+                          backgroundColor: Colors.transparent, elevation: 0)),
+                  resizeToAvoidBottomPadding: true,
+                  backgroundColor: Colors.lightBlueAccent,
+                  drawer: Drawer(child: DrawerList()),
+                  body: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      ListTile(
+                        leading: Icon(Icons.bookmark,
+                            color: Colors.lightBlueAccent[100]),
+                        title: Text(
+                          "Active Tickets",
+                          style: TextStyle(
+                              fontSize: 20,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.lightBlueAccent[100]),
+                        ),
+                      ),
+                      Flexible(fit: FlexFit.loose, child: Tickets()),
+                      ListTile(
+                        leading: Icon(Icons.bookmark,
+                            color: Colors.lightBlueAccent[100]),
+                        title: Text(
+                          "Notifications",
+                          style: TextStyle(
+                              fontSize: 20,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.lightBlueAccent[100]),
+                        ),
+                      ),
+                      Flexible(fit: FlexFit.loose, child: NotifList()),
+                      ListTile(
+                        leading: Icon(Icons.bookmark,
+                            color: Colors.lightBlueAccent[100]),
+                        title: Text(
+                          "UQS Supported Services",
+                          style: TextStyle(
+                              fontSize: 20,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.lightBlueAccent[100]),
+                        ),
+                      ),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Container(
+                            color: Colors.white, child: ServiceList()),
+                      ),
+                    ],
+                  )),
+            ),
+          )
+        : Loading();
   }
 }
 
@@ -106,14 +116,15 @@ class DrawerList extends StatelessWidget {
           ])),
           child: UserTile(),
         ),
-        CostumListile(Icons.person, 'Profile', () => {}),
+        CostumListile(Icons.person, 'Profile', () async {
+          Navigator.of(context).pushReplacementNamed('/profile');
+        }),
         CostumListile(Icons.notifications, 'Notification', () => {}),
         CostumListile(Icons.settings, 'Settings', () => {}),
         CostumListile(Icons.help, 'Help', () => {}),
         CostumListile(Icons.lock, 'Log out', () async {
           //calls sign out function from AuthService()
-          await _auth.signOut();
-          Navigator.pop(context);
+          await _auth.signOut().then((result) => {Navigator.pop(context)});
         }),
       ],
     );

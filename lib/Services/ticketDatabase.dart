@@ -31,15 +31,16 @@ class TicketDatabase {
     );
   }
 
-  //get service stream from the database (returns a list of services)
+  //get stream from the database (returns a list of active tickets)
   Stream<List<Ticket>> get activeTickets {
     return ticketCollection
+        // .orderBy('timestamp', descending: false)//basehan ya ang timestamp kung ano ang order sang list sng active tickets
         .where('ticketOwnerUid', isEqualTo: ticketOwnerUid)
         .snapshots()
         .map(_activeTicketListFromSnapshot);
   }
 
-  //get serviceData stream from the database (returns specific data of a service)
+  //get stream from the database (returns specific data of a ticket)
   Stream<Ticket> get ticketData {
     return ticketCollection
         .document(refNo)

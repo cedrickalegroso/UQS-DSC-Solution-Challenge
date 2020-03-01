@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uqsbeta/Models/service.dart';
 
-class ServiceList extends StatelessWidget {
+class ServiceList extends StatefulWidget {
+  @override
+  _ServiceListState createState() => _ServiceListState();
+}
+
+class _ServiceListState extends State<ServiceList> {
   @override
   Widget build(BuildContext context) {
     final services = Provider.of<List<Service>>(context) ?? [];
@@ -16,7 +21,7 @@ class ServiceList extends StatelessWidget {
         crossAxisCount: 3,
       ),
       itemBuilder: (context, index) {
-        return ServiceTile(service: services[2]);
+        return ServiceTile(service: services[index]);
       },
     );
   }

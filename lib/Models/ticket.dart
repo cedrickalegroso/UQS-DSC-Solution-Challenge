@@ -1,9 +1,9 @@
 class Ticket {
-  String refNo;
-  String serviceUid;
-  String ticketNo;
-  String ticketOwnerUid;
-  int timestamp;
+  final String refNo;
+  final String serviceUid;
+  final String ticketNo;
+  final String ticketOwnerUid;
+  final int timestamp;
 
   Ticket(
       {this.refNo,

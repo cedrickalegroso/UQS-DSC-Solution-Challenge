@@ -10,7 +10,12 @@ class AuthService {
   //creating ang instance of the class User(see user.dart under models) based on a user from the database
   User _userFromFireBaseUser(FirebaseUser user) {
     //if the FireBaseUser user parameter is not null, then assign the uid of that user to _userFromFireBaseUser
-    return user != null ? User(uid: user.uid) : null;
+    return user != null
+        ? User(
+            uid: user.uid,
+            email: user.email,
+          )
+        : null;
   }
 
   //set up a stream to listen for changes in authstate i.e. if user logged in or a user has logged out
@@ -20,7 +25,7 @@ class AuthService {
   }
 
   //function for signing in using email and password
-  Future signInEmail(String email, String password) async {
+  Future<User> signInEmail(String email, String password) async {
     try {
       //calling the built in sign func of FirebaseAuth using email and password as parameters
       AuthResult result = await _auth.signInWithEmailAndPassword(
@@ -47,24 +52,28 @@ class AuthService {
   //@cedrick gin modify ko lang imo gin ubra na sign up func hehe
   //sign up
   // called by on press submit
-  Future signUp(
+  Future<User> signUp(
       String email, String password, String name, String phoneNumber) async {
     try {
       // try to create the user
       AuthResult credentials = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = credentials.user;
-
       //updateProfile(user); => previous func used
       //create an instance of the class DatabaseService using the uid as a parameter,
       //then use the function under this class to update userdata
       await DatabaseService(uid: user.uid)
           .updateUserData(name, phoneNumber, user.email, '');
-
       return _userFromFireBaseUser(user);
     } catch (e) {
       // catch the error
       print(e.toString()); // print the error
+      return null;
     }
+  }
+
+  Future<User> currentUser() async {
+    final FirebaseUser user = await _auth.currentUser();
+    return _userFromFireBaseUser(user);
   }
 }
