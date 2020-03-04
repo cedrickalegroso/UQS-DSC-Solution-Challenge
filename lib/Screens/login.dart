@@ -177,9 +177,9 @@ class _AuthPageState extends State<AuthPage> {
                                         //using the built in func of validating forms, this returns false if form is invalid
                                         if (_formKey.currentState.validate()) {
                                           AuthService _auth = AuthService();
-                                          setState(() {
-                                            loading = !loading;
-                                          });
+                                          // setState(() {
+                                          //   loading = !loading;
+                                          // });
                                           //call the sign in function under AuthService()
                                           dynamic result = await _auth
                                               .signInEmail(_email, _password);
@@ -187,9 +187,9 @@ class _AuthPageState extends State<AuthPage> {
                                           if (result == null) {
                                             // call the snackbar and pass the error message as a param then show error message
                                             _showSnackBar();
-                                            setState(() {
-                                              loading = !loading;
-                                            });
+                                            // setState(() {
+                                            //   loading = !loading;
+                                            // });
                                           }
                                         }
                                       },

@@ -17,11 +17,13 @@ class ServiceDatabase {
   List<Service> _serviceListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Service(
-        uid: uid,
-        email: doc.data['email'] ?? '',
+        abbreviation: doc.data['abbreviation'],
+        address: doc.data['address'],
         displayName: doc.data['displayName'] ?? '',
+        email: doc.data['email'] ?? '',
         phoneNumber: doc.data['phoneNumber'] ?? '',
         photoUrl: doc.data['photoUrl'] ?? '',
+        uid: doc.data['uid'] ?? '',
       );
     }).toList();
   }
@@ -29,11 +31,14 @@ class ServiceDatabase {
   //creating an instance of the class Service(ara sa models na folder) para istore ang data halin sa database
   Service _serviceDataFromSnapshot(DocumentSnapshot snapshot) {
     return Service(
-        uid: uid,
-        email: snapshot.data['email'],
-        displayName: snapshot.data['displayName'],
-        phoneNumber: snapshot.data['phoneNumber'],
-        photoUrl: snapshot.data['photoUrl']);
+      abbreviation: snapshot.data['abbreviation'],
+      address: snapshot.data['address'],
+      displayName: snapshot.data['displayName'] ?? '',
+      email: snapshot.data['email'] ?? '',
+      phoneNumber: snapshot.data['phoneNumber'] ?? '',
+      photoUrl: snapshot.data['photoUrl'] ?? '',
+      uid: snapshot.data['uid'] ?? '',
+    );
   }
 
   //get service stream from the database (returns a list of services)

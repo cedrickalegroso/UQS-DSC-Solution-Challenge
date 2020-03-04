@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uqsbeta/Models/service.dart';
+import 'package:uqsbeta/Services/ticketDatabase.dart';
 
 class ServiceList extends StatefulWidget {
   @override
@@ -33,6 +34,7 @@ class ServiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(service.uid);
     return service != null
         ? Container(
             margin: EdgeInsets.all(10),
@@ -50,6 +52,10 @@ class ServiceTile extends StatelessWidget {
               child: CircleAvatar(
                 backgroundImage: NetworkImage('${service.photoUrl}'),
                 backgroundColor: Colors.transparent,
+                child: IconButton(icon: Icon(Icons.add),alignment: Alignment.bottomRight, onPressed: () async {
+                  
+                  await TicketDatabase(serviceUid: service.uid, serviceAbbreviation: service.abbreviation).addTicket();
+                }),
               ),
             ),
           )

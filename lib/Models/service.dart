@@ -1,14 +1,18 @@
 class Service {
-  final String uid;
-  final String email;
+  final String abbreviation;
+  final String address;
   final String displayName;
+  final String email;
   final String phoneNumber;
   final String photoUrl;
+  final String uid;
 
   Service(
-      {this.uid,
-      this.email,
+      {this.abbreviation,
+      this.address,
       this.displayName,
+      this.email,
       this.phoneNumber,
-      this.photoUrl});
+      this.photoUrl,
+      this.uid});
 }
