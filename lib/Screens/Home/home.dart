@@ -116,8 +116,8 @@ class DrawerList extends StatelessWidget {
           ])),
           child: UserTile(),
         ),
-        CostumListile(Icons.person, 'Profile', () async {
-          Navigator.of(context).pushReplacementNamed('/profile');
+        CostumListile(Icons.person, 'Profile', () {
+          Navigator.popAndPushNamed(context, '/profile');
         }),
         CostumListile(Icons.notifications, 'Notification', () => {}),
         CostumListile(Icons.settings, 'Settings', () => {}),
