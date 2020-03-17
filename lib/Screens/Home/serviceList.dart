@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uqsbeta/Models/service.dart';
@@ -12,8 +13,8 @@ class _ServiceListState extends State<ServiceList> {
   @override
   Widget build(BuildContext context) {
     final services = Provider.of<List<Service>>(context) ?? [];
-    print('Current number of services: ' +
-        (services.length).toString()); //for debugging lang
+    print('Current number of services: ' + (services.length).toString());
+
     //returns a ListView widget based on the list of services registered on the databased
     return GridView.builder(
       physics: ScrollPhysics(),
@@ -34,7 +35,6 @@ class ServiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(service.uid);
     return service != null
         ? Container(
             margin: EdgeInsets.all(10),
@@ -49,13 +49,34 @@ class ServiceTile extends StatelessWidget {
             ),
             child: Container(
               margin: EdgeInsets.all(15),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage('${service.photoUrl}'),
-                backgroundColor: Colors.transparent,
-                child: IconButton(icon: Icon(Icons.add),alignment: Alignment.bottomRight, onPressed: () async {
-                  
-                  await TicketDatabase(serviceUid: service.uid, serviceAbbreviation: service.abbreviation).addTicket();
-                }),
+              child: GestureDetector(
+                onTap: () async {
+                  print(service.uid);
+                  await TicketDatabase(
+                          serviceUid: service.uid,
+                          serviceAbbreviation: service.abbreviation)
+                      .addTicket();
+                },
+                child: CircleAvatar(
+                  // backgroundImage: NetworkImage('${service.photoUrl}'),
+                  child: CachedNetworkImage(
+                    imageUrl: '${service.photoUrl}',
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                  backgroundColor: Colors.transparent,
+                  // child: IconButton(
+                  //     icon: Icon(Icons.add),
+                  //     alignment: Alignment.bottomRight,
+                  //     onPressed: () async {
+                  //       print(service.uid);
+                  //       await TicketDatabase(
+                  //               serviceUid: service.uid,
+                  //               serviceAbbreviation: service.abbreviation)
+                  //           .addTicket();
+                  //     }),
+                ),
               ),
             ),
           )

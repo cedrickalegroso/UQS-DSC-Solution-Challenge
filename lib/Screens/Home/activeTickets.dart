@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uqsbeta/Miscellaneous/loading.dart';
@@ -9,7 +10,7 @@ class Tickets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tickets = Provider.of<List<Ticket>>(context) ?? [];
-    //print(tickets.length);
+    print('active tickets: ' + tickets.length.toString());
     return tickets.length != 0
         ? ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -62,79 +63,86 @@ class ActiveTickets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Service service = Provider.of<Service>(context);
-    return service != null ? Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.all(6),
-      padding: EdgeInsets.all(1),
-      width: MediaQuery.of(context).size.width * .70,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 2,
-            offset: Offset(2, 2),
-          )
-        ],
-        borderRadius: BorderRadius.all(Radius.circular(25)),
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Flexible(
-            flex: 3,
-            child: ListTile(
-              title: Text(
-                '${service.displayName}',
-                textAlign: TextAlign.left,
-              ),
-              leading: CircleAvatar(
-                radius: MediaQuery.of(context).size.width * .05,
-                backgroundImage: NetworkImage('${service.photoUrl}'),
-                backgroundColor: Colors.transparent,
-              ),
+    return service != null
+        ? Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(6),
+            padding: EdgeInsets.all(1),
+            width: MediaQuery.of(context).size.width * .70,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                )
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              color: Colors.white,
             ),
-          ),
-          Flexible(
-            flex: 4,
-            child: ListTile(
-              title: Text(
-                '${tickets[index].ticketNo}',
-                style: TextStyle(
-                    letterSpacing: 2,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.lightBlueAccent),
-                textAlign: TextAlign.center,
-              ),
-              subtitle: Text(
-                'N persons before your turn',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.lightBlueAccent),
-                textAlign: TextAlign.center,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  flex: 3,
+                  child: ListTile(
+                    title: Text(
+                      '${service.displayName}',
+                      textAlign: TextAlign.left,
+                    ),
+                    leading: CircleAvatar(
+                      radius: MediaQuery.of(context).size.width * .05,
+                      // backgroundImage: NetworkImage('${service.photoUrl}'),
+                      child: CachedNetworkImage(
+                        imageUrl: '${service.photoUrl}',
+                        placeholder: (context, url) =>
+                            Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 4,
+                  child: ListTile(
+                    title: Text(
+                      '${tickets[index].ticketNo}',
+                      style: TextStyle(
+                          letterSpacing: 2,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.lightBlueAccent),
+                      textAlign: TextAlign.center,
+                    ),
+                    subtitle: Text(
+                      'N persons before your turn',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.lightBlueAccent),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    ) :Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.all(6),
-      padding: EdgeInsets.all(1),
-      width: MediaQuery.of(context).size.width * .70,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 2,
-            offset: Offset(2, 2),
           )
-        ],
-        borderRadius: BorderRadius.all(Radius.circular(25)),
-        color: Colors.white,
-      ),
-      child:Loading()
-    );
+        : Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(6),
+            padding: EdgeInsets.all(1),
+            width: MediaQuery.of(context).size.width * .70,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                )
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              color: Colors.white,
+            ),
+            child: Loading());
   }
 }

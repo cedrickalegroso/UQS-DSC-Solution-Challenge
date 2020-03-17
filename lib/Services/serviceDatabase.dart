@@ -17,8 +17,8 @@ class ServiceDatabase {
   List<Service> _serviceListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Service(
-        abbreviation: doc.data['abbreviation'],
-        address: doc.data['address'],
+        abbreviation: doc.data['abbreviation'] ?? '',
+        address: doc.data['address'] ?? '',
         displayName: doc.data['displayName'] ?? '',
         email: doc.data['email'] ?? '',
         phoneNumber: doc.data['phoneNumber'] ?? '',
