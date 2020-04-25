@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:UQS/Models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //@cedrick ari naman d ya ang tanan nga function concerning the database for users.
 class DatabaseService {
@@ -46,6 +50,58 @@ class DatabaseService {
   Stream<User> get userData {
     return userCollection.document(uid).snapshots().map(_userDataFromSnapshot);
   }
+
+
+   
+ 
+
+
+   Future<http.Response> updatePic(_uploadedFileURL) async {
+    print('========= Update Name ======');
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+
+    Response response = await post(
+      'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/updateprofilepic:uid:fileUrl',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'uid': user.uid,
+        'fileUrl': _uploadedFileURL
+      }),
+    );
+
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+
+
+
+ 
+  Future<http.Response> updatePhone(_phoneNumber) async {
+    print('========= Update Phone ======');
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+
+    Response response = await post(
+      'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/updatePhoneNumber:uid:phoneNumber',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'uid': user.uid,
+        'phoneNumber': _phoneNumber
+      }),
+    );
+
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+
+
 
 //incase need ta ang list sang mga users nga naka register
   /* List<User> _userDataFromSnapshot(QuerySnapshot snapshot) {

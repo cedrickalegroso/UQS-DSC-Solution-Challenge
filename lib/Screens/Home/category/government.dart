@@ -26,7 +26,7 @@ class _GovernmentState extends State<Government> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                    image: AssetImage('assets/1.png'), fit: BoxFit.cover)),
+                    image: AssetImage('assets/gov.png'), fit: BoxFit.cover)),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -70,21 +70,6 @@ class _GovernmentState extends State<Government> {
   }
 }
 
-/*
-
- child: GridView.builder(
-            physics: ScrollPhysics(),
-            itemCount: services.length,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (context, index) {
-              return StreamProvider<List<GovernmentCategory>>.value(
-                value: ServiceDatabase().governmentCategory,
-                child: GovernmentTile(service: services[index]),
-              );
-            })
-
-*/
 class GovernmentTile extends StatelessWidget {
   final GovernmentCategory service;
   GovernmentTile({this.service, int index});
@@ -116,7 +101,7 @@ class GovernmentTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
                         image:
-                            AssetImage('assets/${service.categoryIndex}.png'),
+                            AssetImage('assets/stillbg.png'),
                         fit: BoxFit.cover)),
                 child: Container(
                   decoration: BoxDecoration(
@@ -137,6 +122,7 @@ class GovernmentTile extends StatelessWidget {
                                 email: service.email,
                                 phoneNumber: service.phoneNumber,
                                 photoUrl: service.photoUrl,
+                                 address: service.address,
                                 categoryIndex: service.categoryIndex,
                                 ticketCount: service.ticketCount,
                                 uid: service.uid)));

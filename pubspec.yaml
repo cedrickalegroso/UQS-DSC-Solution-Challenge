@@ -17,7 +17,7 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
-  cloud_firestore_all: ^0.1.1+4
+  cloud_firestore: ^0.13.4+2
   flutter:
     sdk: flutter
   
@@ -29,16 +29,21 @@ dependencies:
   splashscreen: ^1.2.0
   firebase_core: ^0.4.3
   firebase_auth: ^0.15.4
-  provider: ^4.0.2
+  provider: ^4.0.5
   flutter_spinkit: "^4.0.0"
   progress_dialog: ^1.2.0
   cached_network_image: ^2.0.0
   expandable: ^4.1.2
   intl: ^0.16.1
   http: ^0.12.0+4
-  firebase_messaging: ^5.0.2
-  simple_animations: ^1.3.9
+  firebase_messaging: ^6.0.13
+  simple_animations: ^1.3.11
   flutter_screenutil: ^1.1.0
+  dio: ^3.0.9
+  firebase_storage: ^3.1.5
+  image_picker: ^0.6.5
+  image_cropper: ^1.2.1
+  numberpicker: ^1.2.0
   
 
 
@@ -90,6 +95,13 @@ flutter:
     - assets/image_02.jpg
     - assets/image_03.jpg
     - assets/image_04.jpg
+    - assets/profile.svg
+    - assets/Pbackground.png
+    - assets/nav.png
+    - assets/nav2.png
+    - assets/univ.png
+    - assets/gov.png
+    - assets/bank.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -104,10 +116,8 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
 
-  fonts:
-     - family: Calibre-Semibold
-       fonts:
-         - asset: assets/Calibre Semibold.otf
+  # fonts:
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

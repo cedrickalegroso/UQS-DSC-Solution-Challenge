@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:UQS/Miscellaneous/loading.dart';
-import 'package:UQS/Services/authservice.dart';
 import 'package:UQS/Miscellaneous/fadeAnimation.dart';
 
 

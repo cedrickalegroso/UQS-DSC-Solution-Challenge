@@ -4,10 +4,16 @@ import 'package:UQS/Models/route.dart';
 import 'package:UQS/Services/authservice.dart';
 import 'package:UQS/Models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+  
+
+
+
   //This is the root widget
   @override
   Widget build(BuildContext context) {
@@ -15,6 +21,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().authState,
       child: MaterialApp(
+         
         //initialRoute: '/wrapper',
         //generates a predefined route
         onGenerateRoute: RouteGenerator.generateRoute,
@@ -24,7 +31,8 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.lightBlue[800],
           accentColor: Colors.redAccent[300],
         ),
-        home: Splashscreen(),
+        home: 
+        Splashscreen(),
       ),
     );
   }

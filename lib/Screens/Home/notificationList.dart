@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:UQS/Models/notification.dart';
-import 'package:UQS/Services/notificationDatabase.dart';
 import 'package:UQS/Miscellaneous/loading.dart';
 import 'package:UQS/Models/service.dart';
 import 'package:UQS/Services/serviceDatabase.dart';
@@ -109,16 +108,6 @@ class ActiveNotifications extends StatelessWidget {
                 Flexible(
                   flex: 4,
                   child: ListTile(
-                   /*
-                    title: Text(
-                      '${notifications[index].message}',
-                      style: TextStyle(
-                          letterSpacing: 2,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.lightBlueAccent),
-                      textAlign: TextAlign.center,
-                    ),  */
                     subtitle: 
                     Text(
                        'TEST',
@@ -152,32 +141,3 @@ class ActiveNotifications extends StatelessWidget {
   }
 }
 
-/*
-class NotifList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.fromLTRB(10, 6, 6, 10),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 2,
-                offset: Offset(2, 2),
-              )
-            ],
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            color: Colors.lightBlueAccent[100],
-          ),
-          child: ListTile(
-            title: Text('Notification $index'),
-            leading: Icon(Icons.notifications),
-          ),
-        );
-      },
-    );
-  }
-} */

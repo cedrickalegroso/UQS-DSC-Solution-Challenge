@@ -1,8 +1,9 @@
+import 'package:UQS/Screens/Home/livequeue.dart';
+import 'package:UQS/Screens/Home/queue.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:UQS/Models/service.dart';
-import 'package:UQS/Screens/Home/category/university.dart';
-import 'package:UQS/Services/ticketDatabase.dart';
+
+
 
 class ViewService extends StatefulWidget {
   String displayName;
@@ -10,8 +11,10 @@ class ViewService extends StatefulWidget {
   String email;
   String phoneNumber;
   String photoUrl;
+  String address;
   num categoryIndex;
   num ticketCount;
+  num ticketCountDone;
   String uid;
   ViewService({
     Key key,
@@ -20,7 +23,9 @@ class ViewService extends StatefulWidget {
     this.email,
     this.phoneNumber,
     this.photoUrl,
+    this.address,
     this.ticketCount,
+    this.ticketCountDone,
     this.categoryIndex,
     this.uid,
   }) : super(key: key);
@@ -32,7 +37,9 @@ class ViewService extends StatefulWidget {
       email,
       phoneNumber,
       photoUrl,
+      address,
       ticketCount,
+      ticketCountDone,
       categoryIndex,
       uid);
 }
@@ -43,7 +50,9 @@ class _ViewServiceState extends State<ViewService> {
   String email;
   String phoneNumber;
   String photoUrl;
+  String address;
   num ticketCount;
+  num ticketCountDone;
   num categoryIndex;
   String uid;
 
@@ -53,30 +62,49 @@ class _ViewServiceState extends State<ViewService> {
     this.email,
     this.phoneNumber,
     this.photoUrl,
+    this.address,
     this.ticketCount,
+    this.ticketCountDone,
     this.categoryIndex,
     this.uid,
   );
 
+  int _currentValue = 0;
+
+  Future onchangeValue() async {
+    setState(() {
+      _currentValue = 5;
+    });
+  }
+
+  String title;
+
   @override
   Widget build(BuildContext context) {
+    final screenData = MediaQuery.of(context);
+    if (categoryIndex == 0) {
+      title = "University";
+    } else if (categoryIndex == 1) {
+      title = "Government";
+    } else if (categoryIndex == 2) {
+      title = "Banks";
+    }
     return Scaffold(
         body: Stack(children: <Widget>[
       Positioned(
           top: 0,
           left: 0,
           right: 0,
-          height: 450,
+          height: screenData.size.height / 1.5,
           child: Container(
             padding: EdgeInsets.all(20.0),
             decoration: BoxDecoration(
-            image: DecorationImage(
-                        image:
-                            AssetImage('assets/$categoryIndex.png'),
-                        fit: BoxFit.cover)
-                ),
+                gradient: LinearGradient(colors: [
+              Color.fromRGBO(16, 127, 246, 1),
+              Color.fromRGBO(16, 127, 246, 1),
+            ])),
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 35, vertical: 40),
+              margin: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
               child: CachedNetworkImage(
                 imageUrl: photoUrl,
                 width: 10.0,
@@ -95,7 +123,7 @@ class _ViewServiceState extends State<ViewService> {
               Navigator.pop(context);
             },
             icon: Icon(
-              Icons.arrow_left,
+              Icons.chevron_left,
               color: Colors.white,
             ),
           )),
@@ -103,7 +131,7 @@ class _ViewServiceState extends State<ViewService> {
           left: 0,
           right: 0,
           bottom: 0,
-          height: 300,
+          height: screenData.size.height / 2.5,
           child: Container(
             padding: const EdgeInsets.all(25.0),
             decoration: BoxDecoration(
@@ -115,10 +143,10 @@ class _ViewServiceState extends State<ViewService> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                  Text('University',
+                  Text(title,
                       style: TextStyle(
                           color: Colors.blueAccent,
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold)),
                   SizedBox(
                     height: 10,
@@ -131,7 +159,7 @@ class _ViewServiceState extends State<ViewService> {
                   SizedBox(
                     height: 5,
                   ),
-                  Text('Lopez Jaena, Jaro Iloilo City',
+                  Text(address,
                       style: TextStyle(
                         color: Color.fromRGBO(97, 90, 90, 1),
                         fontSize: 15,
@@ -155,33 +183,65 @@ class _ViewServiceState extends State<ViewService> {
                   SizedBox(
                     height: 20,
                   ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      await TicketDatabase(
-                              serviceUid: uid,
-                              serviceAbbreviation: abbreviation)
-                          .addTicket();
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          gradient: LinearGradient(colors: [
-                            Color.fromRGBO(16, 127, 246, 1),
-                            Color.fromRGBO(16, 127, 246, .6),
-                          ])),
-                      child: Center(
-                          child: Text("Create Ticket",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold))),
+                  Padding(
+                    padding: EdgeInsets.all(screenData.size.width / 150),
+                    child: Row(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => LiveQueue(
+                                    uid: uid, displayName: displayName)));
+                          },
+                          child: Container(
+                            width: screenData.size.height / 5.5,
+                            height: screenData.size.height / 20,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                gradient: LinearGradient(colors: [
+                                  Color.fromRGBO(16, 127, 246, 1),
+                                  Color.fromRGBO(16, 127, 246, 1),
+                                ])),
+                            child: Center(
+                                child: Text("Live Queue",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold))),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Queue(
+                                    ticketCountDone: ticketCountDone,
+                                    ticketCount: ticketCount,
+                                    displayName: displayName,
+                                    abbreviation: abbreviation,
+                                    photoUrl: photoUrl,
+                                    uid: uid)));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10),
+                            width: screenData.size.height / 5.5,
+                            height: screenData.size.height / 20,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: LinearGradient(colors: [
+                                  Color.fromRGBO(16, 127, 246, 1),
+                                  Color.fromRGBO(16, 127, 246, 1),
+                                ])),
+                            child: Center(
+                                child: Text("Queue",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold))),
+                          ),
+                        )
+                      ],
                     ),
-                  )
+                  ),
                 ])),
           ))
     ]));

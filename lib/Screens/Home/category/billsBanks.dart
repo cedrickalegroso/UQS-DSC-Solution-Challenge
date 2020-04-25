@@ -27,7 +27,7 @@ class _BillsBanksState extends State<BillsBanks> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                    image: AssetImage('assets/2.png'), fit: BoxFit.cover)),
+                    image: AssetImage('assets/bank.png'), fit: BoxFit.cover)),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -117,7 +117,7 @@ class BillsBanksTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
                         image:
-                            AssetImage('assets/${service.categoryIndex}.png'),
+                            AssetImage('assets/stillbg.png'),
                         fit: BoxFit.cover)),
                         child: Container(
                           decoration: BoxDecoration(
@@ -138,6 +138,7 @@ class BillsBanksTile extends StatelessWidget {
                               email: service.email,
                               phoneNumber: service.phoneNumber,
                               photoUrl: service.photoUrl,
+                               address: service.address,
                               categoryIndex: service.categoryIndex,
                               ticketCount: service.ticketCount,
                               uid: service.uid)));

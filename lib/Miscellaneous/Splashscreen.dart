@@ -9,7 +9,8 @@ class Splashscreen extends StatefulWidget {
 // new Splashscreen
 class _SplashscreenState extends State<Splashscreen> {
   void initState() {
-    super.initState(); // @carl after 5secs ma call sya sang router nga wrapper
+    super.initState();
+
     Timer(Duration(seconds: 5),
         () => Navigator.of(context).pushReplacementNamed('/onboard'));
   }
@@ -73,33 +74,19 @@ class _SplashscreenState extends State<Splashscreen> {
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Beta 1.0.5',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ))
       ])
     ]));
   }
 }
-
-/*    not deleted for backup
-class _SplashscreenState extends State<Splashscreen> {
-  @override
-  Widget build(BuildContext context) {
-    return SplashScreen(
-      title: new Text(
-        'Unified Qeueing System',
-        style: new TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.grey),
-      ),
-    
-      seconds: 5,
-      navigateAfterSeconds: Wrapper(),
-      image: new Image.asset('assets/uqslogo.png'),
-      backgroundColor: Colors.white,
-      styleTextUnderTheLoader: new TextStyle(),
-      photoSize: 150.0,
-      onClick: () => print("Flutter Egypt"),
-      loaderColor: Colors.white,
-    );
-  }
-} */

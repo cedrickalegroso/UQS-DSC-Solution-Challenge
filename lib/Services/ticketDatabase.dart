@@ -1,25 +1,40 @@
 import 'dart:convert';
-
+import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
 import 'package:UQS/Models/ticket.dart';
 import 'package:http/http.dart' as http;
+import 'package:UQS/Models/timeline.dart';
 
 class TicketDatabase {
+  final num ticketCount;
+  final num isEmailNotify;
   final String ticketOwnerUid;
+  final String uid;
   final String refNo;
   final String serviceUid;
   final String serviceAbbreviation;
+  final bool emailNotify;
+  final int trigger;
+  final num alreadyNotified;
   TicketDatabase(
-      {this.ticketOwnerUid,
+      {this.ticketCount,
+      this.isEmailNotify,
+      this.ticketOwnerUid,
+      this.uid,
       this.refNo,
       this.serviceUid,
-      this.serviceAbbreviation});
+      this.serviceAbbreviation,
+      this.emailNotify,
+      this.trigger,
+      this.alreadyNotified});
 
   final CollectionReference ticketCollection =
       Firestore.instance.collection('tickets');
 
+  final CollectionReference serviceCollection =
+      Firestore.instance.collection('services');
 
   List<Ticket> _activeTicketListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
@@ -32,34 +47,96 @@ class TicketDatabase {
         ticketRaw: doc.data['ticketRaw'] ?? 0,
         ticketStatus: doc.data['ticketStatus'] ?? 0,
         timestamp: doc.data['timestamp'] ?? 0,
+        isEmailNotify: doc.data['isEmailNotify'] ?? 0,
+        trigger: doc.data['trigger'] ?? 0,
+        alreadyNotified: doc.data['alreadyNotified'] ?? 0,
       );
     }).toList();
   }
 
   Ticket _ticketDataFromSnapshot(DocumentSnapshot snapshot) {
     return Ticket(
+      isEmailNotify: snapshot.data['isEmailNotify'] ?? 0,
       refNo: snapshot.data['refNo'],
-      serviceUid: snapshot.data['serviceUid'],
-      teller: snapshot.data['teller'],
-      ticketNo: snapshot.data['ticketNo'],
-      ticketOwnerUid: snapshot.data['ticketOwnerUid'],
-      ticketRaw: snapshot.data['ticketRaw'],
-      ticketStatus: snapshot.data['ticketStatus'],
-      timestamp: snapshot.data['timestamp'],
+      serviceUid: snapshot.data['serviceUid'] ?? '',
+      teller: snapshot.data['teller'] ?? 0,
+      ticketNo: snapshot.data['ticketNo'] ?? '',
+      ticketOwnerUid: snapshot.data['ticketOwnerUid'] ?? '',
+      ticketRaw: snapshot.data['ticketRaw'] ?? 0,
+      trigger: snapshot.data['trigger'] ?? '',
+      ticketStatus: snapshot.data['ticketStatus'] ?? 0,
+      timestamp: snapshot.data['timestamp'] ?? 0,
+      alreadyNotified: snapshot.data['alreadyNotified'] ?? 0,
     );
   }
+
+
+    List<Done> _doneTicketListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Done(
+        refNo: doc.data['refNo'] ?? '',
+        serviceUid: doc.data['serviceUid'] ?? '',
+        teller: doc.data['teller'] ?? 0,
+        ticketNo: doc.data['ticketNo'] ?? 0,
+        ticketOwnerUid: doc.data['ticketOwnerUid'] ?? '',
+        ticketRaw: doc.data['ticketRaw'] ?? 0,
+        ticketStatus: doc.data['ticketStatus'] ?? 0,
+        timestamp: doc.data['timestamp'] ?? 0,
+        isEmailNotify: doc.data['isEmailNotify'] ?? 0,
+        trigger: doc.data['trigger'] ?? 0,
+        alreadyNotified: doc.data['alreadyNotified'] ?? 0,
+      );
+    }).toList();
+  }
+
+   List<Cancelled> _cancelledTicketListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Cancelled(
+        refNo: doc.data['refNo'] ?? '',
+        serviceUid: doc.data['serviceUid'] ?? '',
+        teller: doc.data['teller'] ?? 0,
+        ticketNo: doc.data['ticketNo'] ?? 0,
+        ticketOwnerUid: doc.data['ticketOwnerUid'] ?? '',
+        ticketRaw: doc.data['ticketRaw'] ?? 0,
+        ticketStatus: doc.data['ticketStatus'] ?? 0,
+        timestamp: doc.data['timestamp'] ?? 0,
+        isEmailNotify: doc.data['isEmailNotify'] ?? 0,
+        trigger: doc.data['trigger'] ?? 0,
+        alreadyNotified: doc.data['alreadyNotified'] ?? 0,
+      );
+    }).toList();
+  }
+
+ 
 
   //get stream from the database (returns a list of active tickets)
   Stream<List<Ticket>> get activeTickets {
     return ticketCollection
         .where('ticketOwnerUid', isEqualTo: ticketOwnerUid)
-       // .orderBy('timestamp', descending: false)//basehan ya ang timestamp kung ano ang order sang list sng active tickets
+        .where('ticketStatus', isEqualTo: 1)
+        
+        // .orderBy('timestamp', descending: false)//basehan ya ang timestamp kung ano ang order sang list sng active tickets
         .snapshots()
         .map(_activeTicketListFromSnapshot);
   }
 
+  Stream<List<Done>> get doneTickets {
+    return ticketCollection
+        .where('ticketOwnerUid', isEqualTo: ticketOwnerUid)
+        .where('ticketStatus', isEqualTo: 3)
+        // .orderBy('timestamp', descending: false)//basehan ya ang timestamp kung ano ang order sang list sng active tickets
+        .snapshots()
+        .map(_doneTicketListFromSnapshot);
+  }
 
-
+    Stream<List<Cancelled>> get cancelled {
+    return ticketCollection
+        .where('ticketOwnerUid', isEqualTo: ticketOwnerUid)
+        .where('ticketStatus', isEqualTo: 0)
+        // .orderBy('timestamp', descending: false)//basehan ya ang timestamp kung ano ang order sang list sng active tickets
+        .snapshots()
+        .map(_cancelledTicketListFromSnapshot);
+  }
 
   //get stream from the database (returns specific data of a ticket)
   Stream<Ticket> get ticketData {
@@ -69,105 +146,135 @@ class TicketDatabase {
         .map(_ticketDataFromSnapshot);
   }
 
+  Future initNotify(refNo) async {
+    ticketCollection.document(refNo).updateData({'alreadyNotified': 1});
+    return notifyUser(refNo);
+  }
 
+  Future<http.Response> notifyUser(refNo) async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+    print('notify triggered ' + refNo);
 
+    Response response = await post(
+      'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/NotifyUser:uid:refNo',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'uid': user.uid,
+        'refNo': refNo,
+      }),
+    );
 
- 
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
 
   //function to generate ticket using api
-  Future<http.Response> addTicket() async {
-    print('addticket');
+  Future initTicket() async {
+    print('========= CREATE TICKET ======');
     print('sid' + serviceUid);
     FirebaseAuth _auth = FirebaseAuth.instance;
     FirebaseUser user = await _auth.currentUser();
 
-  
-        
-         Response response = await post(
-            'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/creaticketNew:sid:uid:abb',
-            headers: <String, String>{
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode(<String, String>{
-              'sid': serviceUid,
-              'uid': user.uid,
-              'abb': serviceAbbreviation
-            }),
-          );
+    var checkQuery = ticketCollection
+        .where('serviceUid', isEqualTo: serviceUid)
+        .where('ticketOwnerUid', isEqualTo: user.uid)
+        .where('ticketStatus', isEqualTo: 1);
+    var querySnapthot = await checkQuery.getDocuments();
+    var totalEquals = querySnapthot.documents.length;
+    var zero = 0;
 
-           print(response.statusCode);
-          print(response.body);
-          return response;
+    totalEquals == zero ? createTicket() : print('nope');
+  }
 
-       
-}
+  Future createTicket() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+    var email;
+    var unixTimestamp = DateTime.now().millisecondsSinceEpoch;
+    var ticketNo = ticketCount + 1;
+    var refNo =
+        serviceAbbreviation + ticketNo.toString() + unixTimestamp.toString();
 
+    ticketCollection.document(refNo).setData({
+      'refNo': refNo,
+      'serviceUid': serviceUid,
+      'ticketNo': serviceAbbreviation + ticketNo.toString(),
+      'ticketRaw': ticketNo,
+      'ticketOwnerUid': user.uid,
+      'timestamp': unixTimestamp,
+      'teller': 0,
+      'ticketStatus': 1,
+      'alreadyNotified': 0,
+      'trigger': trigger,
+      'isEmailNotify': emailNotify == true ? 1 : 0
+    });
 
-  /*
+    serviceCollection
+        .document(serviceUid)
+        .updateData({'ticketCount': ticketNo});
+  }
 
+  Future<Timeline> getJsonData() async {
+    var data = await http.get(
+        'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/timeline/$refNo',
+        headers: <String, String>{
+          'Accept': 'application/json',
+        });
+    var jsonData = json.decode(data.body);
+    List<Timeline> timelines = [];
 
-  if (snapShot  == null ) {
-            Response response = await post(
-            'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/creaticketNew:sid:uid:abb',
-            headers: <String, String>{
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode(<String, String>{
-              'sid': serviceUid,
-              'uid': user.uid,
-              'abb': serviceAbbreviation
-            }),
-          );
+    for (var u in jsonData) {
+      Timeline timeline = Timeline(message: u['message']);
 
-           print(response.statusCode);
-          print(response.body);
-          return response;
-         
-        } else {
-          print('Error you already have an existing ticket');
-          
-        }
-        return null;
+      timelines.add(timeline);
+    }
 
+    print(timelines.length);
+  }
 
-*/
-  //function to generate ticket using firestore
-  // Future<void> addTicket() async {
-  //   int unixTimestamp = (DateTime.now().millisecondsSinceEpoch / 1000).floor();
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   FirebaseUser user = await _auth.currentUser();
+  //function to read ticket timeline from server
+  Future<http.Response> readTimeline() async {
+    print('getting timeline for ' + refNo);
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
 
-  //   ticketCollection
-  //       .orderBy('ticketRaw', descending: true)
-  //       .where('serviceUid', isEqualTo: serviceUid)
-  //       .limit(1)
-  //       .getDocuments()
-  //       .then((snapshot) async {
-  //     if (snapshot == null) {
-  //       return await ticketCollection.document('${1 + unixTimestamp}').setData({
-  //         'refNo': serviceAbbreviation + 1.toString() + unixTimestamp.toString(),
-  //         'serviceUid': serviceUid,
-  //         'ticketNo': serviceAbbreviation + 1.toString(),
-  //         'ticketRaw': 1.toString(),
-  //         'ticketOwnerUid': user.uid,
-  //         'timestamp': (DateTime.now().millisecondsSinceEpoch / 1000).floor()
-  //       });
-  //     } else {
-  //       snapshot.documents.forEach((doc) async {
-  //         int ticketRaw1 = doc.data['ticketRaw'] + 1;
-  //         String _refNo = serviceAbbreviation + ticketRaw1.toString() + unixTimestamp.toString();
-  //         String ticketFinal = serviceAbbreviation + ticketRaw1.toString();
+    Response response = await post(
+      'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/CancelTicket:refNo',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'refNo': refNo,
+      }),
+    );
 
-  //         return await ticketCollection.document('$_refNo').setData({
-  //           'refNo': _refNo,
-  //           'serviceUid': serviceUid,
-  //           'ticketNo': ticketFinal,
-  //           'ticketRaw': ticketRaw1,
-  //           'ticketOwnerUid': user.uid,
-  //           'timestamp': (DateTime.now().millisecondsSinceEpoch / 1000).floor()
-  //         });
-  //       });
-  //     }
-  //   });
-  // }
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+
+  //function to generate ticket using api
+  Future<http.Response> cancelTicket() async {
+    print('cancelling ' + refNo);
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+
+    Response response = await post(
+      'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/CancelTicket:refNo',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'refNo': refNo,
+      }),
+    );
+
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
 }

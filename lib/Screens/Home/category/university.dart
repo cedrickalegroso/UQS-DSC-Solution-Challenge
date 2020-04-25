@@ -27,13 +27,13 @@ class _UniversityState extends State<University> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                    image: AssetImage('assets/0.png'), fit: BoxFit.cover)),
+                    image: AssetImage('assets/univ.png'), fit: BoxFit.cover)),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   gradient:
                       LinearGradient(begin: Alignment.bottomRight, colors: [
-                    Colors.black.withOpacity(.4),
+                    Colors.black.withOpacity(.6),
                     Colors.black.withOpacity(.2),
                   ])),
               child: Column(
@@ -51,7 +51,7 @@ class _UniversityState extends State<University> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 10.0,
           ),
           Expanded(
               child: GridView.builder(
@@ -73,24 +73,6 @@ class _UniversityState extends State<University> {
     );
   }
 }
-/*
-
-       child:  GridView.builder(
-            physics: ScrollPhysics(),
-            itemCount: services.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 0.1,
-              childAspectRatio: 1.0,
-            ),
-            itemBuilder: (context, index) {
-              return StreamProvider<List<UniversityCategory>>.value(
-                value: ServiceDatabase().universityCategory,
-                child: UniversityTile(service: services[index]),
-              );
-            }) 
-            
-*/
 
 class UniversityTile extends StatelessWidget {
   final UniversityCategory service;
@@ -114,27 +96,20 @@ class UniversityTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return service != null
-        ? Padding(
-            padding: EdgeInsets.all(0),
+        ? Container(
+            
             child: Card(
               color: Colors.transparent,
               elevation: 0,
               child: Container(
-                height: 600,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                        image:
-                            AssetImage('assets/${service.categoryIndex}.png'),
-                        fit: BoxFit.cover)),
+                     gradient: LinearGradient(colors: [
+                            Color.fromRGBO(16, 127, 246, 1),
+                            Color.fromRGBO(16, 127, 246, 1),
+                          ])),
                 child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient:
-                          LinearGradient(begin: Alignment.bottomRight, colors: [
-                        Colors.black.withOpacity(.4),
-                        Colors.black.withOpacity(.2),
-                      ])),
+         
                   child: Transform.translate(
                       offset: Offset(0, -0),
                       child: GestureDetector(
@@ -147,6 +122,8 @@ class UniversityTile extends StatelessWidget {
                                   phoneNumber: service.phoneNumber,
                                   photoUrl: service.photoUrl,
                                   ticketCount: service.ticketCount,
+                                  ticketCountDone: service.ticketCountDone,
+                                  address: service.address,
                                   categoryIndex: service.categoryIndex,
                                   uid: service.uid)));
                         },

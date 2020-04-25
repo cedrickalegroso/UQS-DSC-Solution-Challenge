@@ -11,12 +11,14 @@ class _OnBoardingState extends State<Onboarding> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
+    
+
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
     for (int i = 0; i < _numPages; i++) {
       list.add(i == _currentPage ? _indicator(true) : _indicator(false));
     }
-    return list;
+  return list;
   }
 
   Widget _indicator(bool isActive) {
@@ -33,10 +35,12 @@ class _OnBoardingState extends State<Onboarding> {
 
   @override
   Widget build(BuildContext context) {
+    final screenData = MediaQuery.of(context);
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,
           child: Container(
+            height: screenData.size.height,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -70,7 +74,7 @@ class _OnBoardingState extends State<Onboarding> {
                           )),
                     ),
                     Container(
-                        height: 500.0,
+                        height: screenData.size.height / 1.4,
                         child: PageView(
                           physics: ClampingScrollPhysics(),
                           controller: _pageController,
@@ -85,16 +89,16 @@ class _OnBoardingState extends State<Onboarding> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
+                                     SizedBox(height: screenData.size.height / 20,),
                                     Center(
                                         child: Image(
                                       image:
                                           AssetImage('assets/onboarding0.png'),
-                                      height: 300,
-                                      width: 300,
+                                      width: screenData.size.height / 2.5,
                                     )),
-                                    SizedBox(height: 30.0),
+                                    SizedBox(height:  screenData.size.height / 15,),
                                     Text(
-                                      'Queue to your service\nanytime, anywhere.',
+                                      'Queue anytime, anywhere',
                                       style: TextStyle(
                                           fontSize: 30,
                                           color: Colors.white,
@@ -112,16 +116,16 @@ class _OnBoardingState extends State<Onboarding> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
+                                     SizedBox(height: screenData.size.height / 20,),
                                     Center(
                                         child: Image(
                                       image:
                                           AssetImage('assets/onboarding1.png'),
-                                      height: 300,
-                                      width: 300,
+                                      width: screenData.size.height / 2.5,
                                     )),
                                     SizedBox(height: 30.0),
                                     Text(
-                                      'No need to check on\nyour service if its your turn',
+                                      'Worry no more',
                                       style: TextStyle(
                                           fontSize: 30,
                                           color: Colors.white,
@@ -140,12 +144,12 @@ class _OnBoardingState extends State<Onboarding> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
+                                       SizedBox(height: screenData.size.height / 20,),
                                     Center(
                                         child: Image(
                                       image:
                                           AssetImage('assets/onboarding2.png'),
-                                      height: 300,
-                                      width: 300,
+                                      width: screenData.size.height / 2.5,
                                     )),
                                     SizedBox(height: 30.0),
                                     Text(

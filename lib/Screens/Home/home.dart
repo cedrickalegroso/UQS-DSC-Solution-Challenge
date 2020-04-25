@@ -20,7 +20,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class Homepage extends StatefulWidget {
   @override
   _HomepageState createState() => _HomepageState();
@@ -33,6 +32,8 @@ class _HomepageState extends State<Homepage> {
     ServiceList(),
     Profilepage(),
   ];
+
+  
 
   final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -61,10 +62,6 @@ class _HomepageState extends State<Homepage> {
         print("onMessage:  $message");
         _showSnackBar(message);
       },
-      onResume: (Map<String, dynamic> message) async {
-        //  print("onResume:  $message");
-        // _showSnackBar(message);
-      },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch:  $message");
         final snackbar = SnackBar(
@@ -91,6 +88,10 @@ class _HomepageState extends State<Homepage> {
               StreamProvider<List<Ticket>>.value(
                   value:
                       TicketDatabase(ticketOwnerUid: user.uid).activeTickets),
+              StreamProvider<List<Done>>.value(
+                  value: TicketDatabase(ticketOwnerUid: user.uid).doneTickets),
+              StreamProvider<List<Cancelled>>.value(
+                  value: TicketDatabase(ticketOwnerUid: user.uid).cancelled),
               StreamProvider<User>.value(
                   value: DatabaseService(uid: user.uid).userData),
               StreamProvider<List<Notif>>.value(
@@ -179,117 +180,3 @@ _saveDeviceToken() async {
     });
   }
 }
-
-/*
-
-
-                         child: SafeArea(     
-              child: new Scaffold(
-                 key: _scaffoldKey,
-                  extendBody: true,
-                  appBar: PreferredSize(
-                      preferredSize: Size.fromHeight(25),
-                      child: AppBar(
-                          backgroundColor: Colors.transparent, elevation: 0)),
-                  resizeToAvoidBottomPadding: true,
-                  backgroundColor: Colors.lightBlueAccent,
-                  drawer: Drawer(child: DrawerList()),
-                  body: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.bookmark,
-                            color: Colors.lightBlueAccent[100]),
-                        title: Text(
-                          "Active Tickets",
-                          style: TextStyle(
-                              fontSize: 20,
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.lightBlueAccent[100]),
-                        ),
-                        
-                      ),
-                   
-                      Flexible(fit: FlexFit.loose, child: Tickets()),
-                      ListTile(
-                        leading: Icon(Icons.bookmark,
-                            color: Colors.lightBlueAccent[100]),
-                        title: Text(
-                          "Notifications",
-                          style: TextStyle(
-                              fontSize: 20,
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.lightBlueAccent[100]),
-                        ),
-                           
-                      ),
-                    
-                      Flexible(fit: FlexFit.loose, child: NotifList()),
-                      ListTile(
-                        leading: Icon(Icons.bookmark,
-                            color: Colors.lightBlueAccent[100]),
-                        title: Text(
-                          "UQS Supported Services",
-                          style: TextStyle(
-                              fontSize: 20,
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.lightBlueAccent[100]),
-                        ),
-                      ),
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: Container(
-                            color: Colors.white, child: ServiceList()),
-                      ),
-                    ],
-                  )),
-            ),
-
-
-            
-                 var tokenRef = _db
-                 .collection('userCollection')
-                 .document(user.uid)
-                 .collection('tokens')
-                 .document(fcmToken);
-        
-                 await tokenRef.setData({
-                    'token' : fcmToken,
-                    'createdAt' : FieldValue.serverTimestamp(),
-                    'platform' : Platform.operatingSystem
-                 }); */
-
-/*Future<bool> showAlertDialog(BuildContext context) async {
-  dynamic signout;
-  // set up the button
-  Widget okButton = FlatButton(
-    child: Text("Ok"),
-    onPressed: () {Navigator.pop(context,true);},
-  );
-  Widget cancelButton = FlatButton(
-    child: Text("Cancel"),
-    onPressed: () {Navigator.pop(context,false);},
-  );
-  
-  // set up the AlertDialog
-  signout = AlertDialog(
-    title: Text("Signout"),
-    content: Text("Are you sure you want to signout?"),
-    actions: [
-      okButton,
-      cancelButton
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}*/

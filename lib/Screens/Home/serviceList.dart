@@ -2,13 +2,9 @@ import 'package:UQS/Models/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:UQS/Miscellaneous/serviceCategory.dart';
 import 'package:UQS/Models/service.dart';
 import 'package:UQS/Screens/Home/category/billsBanks.dart';
 import 'package:UQS/Screens/Home/category/government.dart';
-import 'package:UQS/Screens/Home/ticketsWrapper.dart';
-import 'package:UQS/Services/serviceDatabase.dart';
-import 'package:UQS/Services/ticketDatabase.dart';
 import 'package:UQS/Miscellaneous/profileClipper.dart';
 
 import 'category/university.dart';
@@ -35,6 +31,8 @@ class _ServiceListState extends State<ServiceList> {
 
     final User user = Provider.of<User>(context);
 
+    final screenData = MediaQuery.of(context);
+
     print(user.uid);
 
     print('Current number of services: ' + (services.length).toString());
@@ -58,7 +56,9 @@ class _ServiceListState extends State<ServiceList> {
                   service,
                   style: TextStyle(
                       color: _isSelected ? Colors.white : Colors.white70,
-                      fontSize: _isSelected ? 20 : 18,
+                      fontSize: _isSelected
+                          ? screenData.size.height / 45
+                          : screenData.size.height / 45,
                       fontWeight:
                           _isSelected ? FontWeight.bold : FontWeight.normal),
                 )));
@@ -66,140 +66,78 @@ class _ServiceListState extends State<ServiceList> {
     }
 
     //returns a ListView widget based on the list of services registered on the databased
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            height: 600,
+    return Scaffold(
+        body: Stack(children: <Widget>[
+      Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          height: screenData.size.height,
+          child: Container(
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/background01.png'),
-                    fit: BoxFit.fill)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(
-                      top: 15,
-                      left: 25,
-                      right: 25,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                gradient: LinearGradient(colors: [
+              Color.fromRGBO(16, 127, 246, 1),
+              Color.fromRGBO(16, 127, 246, 1),
+            ])),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(top: 10.0, left: 20.0),
+                      child: Text(
+                        "Services",
+                        style: TextStyle(color: Colors.white, fontSize: 30),
+                      )),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                          'UQS',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                        Container(
+                          margin: EdgeInsets.only(top: 15.0, left: 20.0),
+                          child: Text(user.name,
+                              style: TextStyle(color: Colors.white)),
                         ),
-                        ClipOval(
-                          clipper: ProfileClipper(),
-                          child: CachedNetworkImage(
-                            imageUrl: '${user.photoUrl}',
-                            placeholder: (context, url) =>
-                                Center(child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                          ),
-                        )
-                      ],
-                    )),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text("Services",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 40.0,
-                              fontFamily: 'Calibre-Semibold',
-                            )),
-                      ],
-                    )),
-                Row(
-                  children: _buildServiceCat(_currentIndex),
-                ),
-                Expanded(child: _pageOptions[_selectedNaviation])
-              ],
-            ),
-          )
-        ]);
-  }
-}
-
-class ServiceTile extends StatelessWidget {
-  final Service service;
-  ServiceTile({this.service, int index});
-
-  //show snackbar method
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  _showSnackBar() {
-    final snackBar = SnackBar(
-      content: Text(
-        'Ticket created succesfully',
-        style: TextStyle(fontSize: 15.0),
+                        SizedBox(width: 10.0),
+                        Container(
+                            margin: EdgeInsets.only(top: 10.0, right: 10),
+                            child: ClipOval(
+                              clipper: ProfileClipper(),
+                              child: CachedNetworkImage(
+                                imageUrl: user.photoUrl,
+                                width: screenData.size.height / 20,
+                                placeholder: (context, url) =>
+                                    Center(child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ),
+                            ))
+                      ])
+                ]),
+          )),
+      Positioned(
+        left: 0,
+               right: screenData.size.width / 15,
+        bottom: 0,
+     height: screenData.size.height / 1.2 + 40,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _buildServiceCat(_currentIndex),
+        ),
       ),
-      duration: new Duration(seconds: 5),
-      backgroundColor: Colors.green,
-    );
-
-    _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return service != null
-        ? Card(
-            color: Colors.transparent,
-            elevation: 0,
-            child: Container(
+      Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: screenData.size.height / 1.2 ,
+          child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                      image: AssetImage('assets/stillbg.png'),
-                      fit: BoxFit.cover)),
-              child: Transform.translate(
-                offset: Offset(50, -50),
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 63),
-                  child: CachedNetworkImage(
-                    imageUrl: '${service.photoUrl}',
-                    placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
-                ),
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25)),
               ),
-            ),
-          )
-        : null;
+              child: _pageOptions[_selectedNaviation])),
+    ]));
   }
 }
-
-/*
-
-       Expanded(
-                  child: SizedBox(
-                      height: 500.0,
-                      child: GridView.builder(
-                        physics: ScrollPhysics(),
-                        itemCount: services.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (context, index) {
-                          print('called $_currentIndex');
-                          return StreamProvider<List<Service>>.value(
-                            value: ServiceDatabase(categoryIndex: _currentIndex).service,
-                            child: ServiceTile(service: services[index]),
-                          );
-                        },
-                      )
-                  ),
-                )
-
-*/

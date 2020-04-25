@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:UQS/Miscellaneous/loading.dart';
 import 'package:UQS/Services/authservice.dart';
 import 'package:UQS/Miscellaneous/fadeAnimation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -34,8 +35,20 @@ class _SignUpPageState extends State<SignUpPage> {
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
+  checkforUser() async{
+  FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+     
+     user == null 
+     ? Text("there is no user")
+     : Text("there is a user");
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    checkforUser();
+    final screenData = MediaQuery.of(context);
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomPadding: true,
@@ -45,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       children: <Widget> [
                         FadeAnimation(1, Container(
-                          height: 150,
+                          height: screenData.size.height / 3,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage('assets/background.png'),
@@ -68,6 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             child:  Column(
                               children: <Widget> [
                                 Container(
+                                    height: screenData.size.height / 2 ,
                                     margin: EdgeInsets.only(top: 1),
                                   padding: EdgeInsets.all(5.0),
                                   decoration: BoxDecoration(
@@ -86,6 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     child:  Column(
                                     children: <Widget>[                
                                       Container(
+                                      
                                         padding: EdgeInsets.all(8.0),
                                         decoration: BoxDecoration(
                                            border: Border(bottom: BorderSide(color: Colors.grey[100]))

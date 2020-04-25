@@ -27,6 +27,8 @@ class ServiceDatabase {
         email: doc.data['email'] ?? '',
         phoneNumber: doc.data['phoneNumber'] ?? '',
         photoUrl: doc.data['photoUrl'] ?? '',
+        ticketCount: doc.data['ticketCount'] ?? 0,
+        ticketCountDone: doc.data['ticketCountDone'] ?? 0,
         uid: doc.data['uid'] ?? '',
         categoryIndex: doc.data['categoryIndex'] ?? 0,
       );
@@ -42,7 +44,8 @@ class ServiceDatabase {
       email: snapshot.data['email'] ?? '',
       phoneNumber: snapshot.data['phoneNumber'] ?? '',
       photoUrl: snapshot.data['photoUrl'] ?? '',
-      ticketCount: snapshot.data['ticketCount'] ?? '',
+      ticketCount: snapshot.data['ticketCount'] ?? 0,
+      ticketCountDone: snapshot.data['ticketCountDone'] ?? 0,
       uid: snapshot.data['uid'] ?? '',
       categoryIndex: snapshot.data['categoryIndex'] ?? 0,
     );
@@ -57,9 +60,10 @@ class ServiceDatabase {
         .map(_serviceListFromSnapshot);
   }
 
-  // UNIVERISTY 
+  // UNIVERISTY
 
-  List<UniversityCategory> _serviceListUniversityFromSnapshot(QuerySnapshot snapshot) {
+  List<UniversityCategory> _serviceListUniversityFromSnapshot(
+      QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return UniversityCategory(
         abbreviation: doc.data['abbreviation'] ?? '',
@@ -68,6 +72,8 @@ class ServiceDatabase {
         email: doc.data['email'] ?? '',
         phoneNumber: doc.data['phoneNumber'] ?? '',
         photoUrl: doc.data['photoUrl'] ?? '',
+        ticketCount: doc.data['ticketCount'] ?? 0,
+        ticketCountDone: doc.data['ticketCountDone'] ?? 0,
         uid: doc.data['uid'] ?? '',
         categoryIndex: doc.data['categoryIndex'] ?? 0,
       );
@@ -83,10 +89,10 @@ class ServiceDatabase {
 
   // ----------
 
+  //  GOVERNMENT
 
-  //  GOVERNMENT 
-
-  List<GovernmentCategory> _serviceListGovernmentFromSnapshot(QuerySnapshot snapshot) {
+  List<GovernmentCategory> _serviceListGovernmentFromSnapshot(
+      QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return GovernmentCategory(
         abbreviation: doc.data['abbreviation'] ?? '',
@@ -95,6 +101,8 @@ class ServiceDatabase {
         email: doc.data['email'] ?? '',
         phoneNumber: doc.data['phoneNumber'] ?? '',
         photoUrl: doc.data['photoUrl'] ?? '',
+        ticketCount: doc.data['ticketCount'] ?? 0,
+        ticketCountDone: doc.data['ticketCountDone'] ?? 0,
         uid: doc.data['uid'] ?? '',
         categoryIndex: doc.data['categoryIndex'] ?? 0,
       );
@@ -110,11 +118,10 @@ class ServiceDatabase {
 
   // --------
 
+  //  GOVERNMENT
 
-
-  //  GOVERNMENT 
-
-  List<BillsBanksCategory> _serviceListBillsBanksFromSnapshot(QuerySnapshot snapshot) {
+  List<BillsBanksCategory> _serviceListBillsBanksFromSnapshot(
+      QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return BillsBanksCategory(
         abbreviation: doc.data['abbreviation'] ?? '',
@@ -123,6 +130,8 @@ class ServiceDatabase {
         email: doc.data['email'] ?? '',
         phoneNumber: doc.data['phoneNumber'] ?? '',
         photoUrl: doc.data['photoUrl'] ?? '',
+        ticketCount: doc.data['ticketCount'] ?? 0,
+        ticketCountDone: doc.data['ticketCountDone'] ?? 0,
         uid: doc.data['uid'] ?? '',
         categoryIndex: doc.data['categoryIndex'] ?? 0,
       );
@@ -137,10 +146,6 @@ class ServiceDatabase {
   }
 
   // --------
-
-
-
-
 
   //get serviceData stream from the database (returns specific data of a service)
   Stream<Service> get serviceData {

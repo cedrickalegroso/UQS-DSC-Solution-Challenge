@@ -7,6 +7,7 @@ class Service {
   final String photoUrl;
   final String uid;
   final int ticketCount;
+  final int ticketCountDone;
   final int categoryIndex;
 
   Service(
@@ -17,6 +18,7 @@ class Service {
       this.phoneNumber,
       this.photoUrl,
       this.ticketCount,
+      this.ticketCountDone,
       this.uid,
       this.categoryIndex});
 }
@@ -32,6 +34,7 @@ class UniversityCategory {
   final String photoUrl;
   final String uid;
   final int ticketCount;
+  final int ticketCountDone;
   final int categoryIndex;
 
   UniversityCategory(
@@ -42,6 +45,7 @@ class UniversityCategory {
       this.phoneNumber,
       this.photoUrl,
       this.ticketCount,
+      this.ticketCountDone,
       this.uid,
       this.categoryIndex});
 }
@@ -56,6 +60,7 @@ class GovernmentCategory {
   final String photoUrl;
   final String uid;
   final int ticketCount;
+  final int ticketCountDone;
   final int categoryIndex;
 
   GovernmentCategory(
@@ -66,6 +71,7 @@ class GovernmentCategory {
       this.phoneNumber,
       this.photoUrl,
       this.ticketCount,
+      this.ticketCountDone,
       this.uid,
       this.categoryIndex});
 }
@@ -80,6 +86,7 @@ class BillsBanksCategory {
   final String photoUrl;
   final String uid;
   final int ticketCount;
+  final int ticketCountDone;
   final int categoryIndex;
 
   BillsBanksCategory(
@@ -90,6 +97,7 @@ class BillsBanksCategory {
       this.phoneNumber,
       this.photoUrl,
       this.ticketCount,
+      this.ticketCountDone,
       this.uid,
       this.categoryIndex});
 }

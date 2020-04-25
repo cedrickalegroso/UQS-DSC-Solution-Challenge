@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:UQS/Services/userDatabase.dart';
 import 'package:UQS/Models/user.dart';
+import 'package:UQS/Screens/login.dart';
 
 //@cedrick gin compile ko na di tanan nga function concerning Firebase Authentication
 class AuthService {
@@ -15,6 +16,9 @@ class AuthService {
         ? User(
             uid: user.uid,
             email: user.email,
+            photoUrl: user.photoUrl,
+            phoneNumber: user.phoneNumber,
+            name: user.displayName
           )
         : null;
   }
@@ -32,8 +36,14 @@ class AuthService {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+
+        if (user.isEmailVerified) {
+        return _userFromFireBaseUser(user);
+      } else {
+        return null;
+        }
       //the user property of result is then passed to _userFromFireBaseUser as its parameter
-      return _userFromFireBaseUser(user);
+     // 
     } catch (e) {
       print(e.toString());
       return null;
@@ -60,6 +70,8 @@ class AuthService {
       AuthResult credentials = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = credentials.user;
+
+      user.sendEmailVerification(); // sends email verification
       //updateProfile(user); => previous func used
       //create an instance of the class DatabaseService using the uid as a parameter,
       //then use the function under this class to update userdata

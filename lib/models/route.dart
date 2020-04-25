@@ -1,3 +1,6 @@
+import 'package:UQS/Screens/Home/livequeue.dart';
+import 'package:UQS/Screens/Home/menu.dart';
+import 'package:UQS/Screens/Home/queue.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:UQS/Screens/Home/home.dart';
@@ -29,11 +32,16 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => Homepage());
       case '/viewService':
         return MaterialPageRoute(builder: (_) => ViewService());
+      case '/liveQueue':
+        return MaterialPageRoute(builder: (_) => LiveQueue());
+      case '/queue':
+        return MaterialPageRoute(builder: (_) => Queue());
+      case '/test':
+        return MaterialPageRoute(builder: (_) => MenuDashboardPage());
       case '/profile':
         return MaterialPageRoute(builder: (_) => Profilepage());
       default:
         return MaterialPageRoute(builder: (_) => Wrapper());
-        
     }
   }
 }
