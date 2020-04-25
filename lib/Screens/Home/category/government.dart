@@ -99,18 +99,14 @@ class GovernmentTile extends StatelessWidget {
             child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                        image:
-                            AssetImage('assets/stillbg.png'),
-                        fit: BoxFit.cover)),
+                    gradient: LinearGradient(colors: [
+                      Color.fromRGBO(16, 127, 246, 1),
+                      Color.fromRGBO(16, 127, 246, 1),
+                    ])),
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient:
-                          LinearGradient(begin: Alignment.bottomRight, colors: [
-                        Colors.black.withOpacity(.4),
-                        Colors.black.withOpacity(.2),
-                      ])),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Transform.translate(
                     offset: Offset(0, -0),
                     child: GestureDetector(
@@ -122,8 +118,9 @@ class GovernmentTile extends StatelessWidget {
                                 email: service.email,
                                 phoneNumber: service.phoneNumber,
                                 photoUrl: service.photoUrl,
-                                 address: service.address,
+                                address: service.address,
                                 categoryIndex: service.categoryIndex,
+                                ticketCountDone: service.ticketCountDone,
                                 ticketCount: service.ticketCount,
                                 uid: service.uid)));
                       },

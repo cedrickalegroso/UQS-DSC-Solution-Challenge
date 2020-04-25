@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
 import 'package:UQS/Models/ticket.dart';
 import 'package:http/http.dart' as http;
-import 'package:UQS/Models/timeline.dart';
 
 class TicketDatabase {
   final num ticketCount;
@@ -70,8 +68,7 @@ class TicketDatabase {
     );
   }
 
-
-    List<Done> _doneTicketListFromSnapshot(QuerySnapshot snapshot) {
+  List<Done> _doneTicketListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Done(
         refNo: doc.data['refNo'] ?? '',
@@ -89,7 +86,7 @@ class TicketDatabase {
     }).toList();
   }
 
-   List<Cancelled> _cancelledTicketListFromSnapshot(QuerySnapshot snapshot) {
+  List<Cancelled> _cancelledTicketListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Cancelled(
         refNo: doc.data['refNo'] ?? '',
@@ -107,14 +104,12 @@ class TicketDatabase {
     }).toList();
   }
 
- 
-
   //get stream from the database (returns a list of active tickets)
   Stream<List<Ticket>> get activeTickets {
     return ticketCollection
         .where('ticketOwnerUid', isEqualTo: ticketOwnerUid)
-        .where('ticketStatus', isEqualTo: 1)
-        
+        .where('ticketStatus', isGreaterThan: 0)
+        .where('ticketStatus', isLessThanOrEqualTo: 2)
         // .orderBy('timestamp', descending: false)//basehan ya ang timestamp kung ano ang order sang list sng active tickets
         .snapshots()
         .map(_activeTicketListFromSnapshot);
@@ -129,7 +124,7 @@ class TicketDatabase {
         .map(_doneTicketListFromSnapshot);
   }
 
-    Stream<List<Cancelled>> get cancelled {
+  Stream<List<Cancelled>> get cancelled {
     return ticketCollection
         .where('ticketOwnerUid', isEqualTo: ticketOwnerUid)
         .where('ticketStatus', isEqualTo: 0)
@@ -193,7 +188,6 @@ class TicketDatabase {
   Future createTicket() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     FirebaseUser user = await _auth.currentUser();
-    var email;
     var unixTimestamp = DateTime.now().millisecondsSinceEpoch;
     var ticketNo = ticketCount + 1;
     var refNo =
@@ -213,34 +207,21 @@ class TicketDatabase {
       'isEmailNotify': emailNotify == true ? 1 : 0
     });
 
+    /*  ticketCollection.document(refNo).collection('timeline').document(unixTimestamp.toString()).setData({
+           'message': '$unixTimestamp Ticket Created'
+      }); */
+
     serviceCollection
         .document(serviceUid)
         .updateData({'ticketCount': ticketNo});
   }
 
-  Future<Timeline> getJsonData() async {
-    var data = await http.get(
-        'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/timeline/$refNo',
-        headers: <String, String>{
-          'Accept': 'application/json',
-        });
-    var jsonData = json.decode(data.body);
-    List<Timeline> timelines = [];
 
-    for (var u in jsonData) {
-      Timeline timeline = Timeline(message: u['message']);
-
-      timelines.add(timeline);
-    }
-
-    print(timelines.length);
-  }
 
   //function to read ticket timeline from server
   Future<http.Response> readTimeline() async {
-    print('getting timeline for ' + refNo);
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    FirebaseUser user = await _auth.currentUser();
+   
+
 
     Response response = await post(
       'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/CancelTicket:refNo',
@@ -259,9 +240,7 @@ class TicketDatabase {
 
   //function to generate ticket using api
   Future<http.Response> cancelTicket() async {
-    print('cancelling ' + refNo);
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    FirebaseUser user = await _auth.currentUser();
+
 
     Response response = await post(
       'https://us-central1-theuqs-52673.cloudfunctions.net/app/api/CancelTicket:refNo',

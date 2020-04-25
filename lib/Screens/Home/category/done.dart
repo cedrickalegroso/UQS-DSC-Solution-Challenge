@@ -7,9 +7,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:UQS/Models/service.dart';
-import 'package:UQS/Screens/Home/category/billsBanks.dart';
-import 'package:UQS/Screens/Home/category/government.dart';
-import 'package:UQS/Miscellaneous/profileClipper.dart';
 
 import '../viewticket.dart';
 
@@ -23,13 +20,17 @@ class _DonePageState extends State<DonePage> {
   Widget build(BuildContext context) {
     final screenData = MediaQuery.of(context);
     final tickets = Provider.of<List<Done>>(context) ?? [];
-    final User user = Provider.of<User>(context);
-    return Container(
-      child: Column(children: <Widget>[
-        Container(
-           height: screenData.size.height / 1.3,
+    return tickets.length == 0
+        ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('No done tickets', style: TextStyle(fontSize: 20.0, color: Colors.grey),),
+            ],
+          )
+        : Container(
+            height: screenData.size.height / 1.3,
             child: GridView.builder(
-              physics: ScrollPhysics(),
+            physics: ScrollPhysics(),
               itemCount: tickets.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
@@ -41,9 +42,8 @@ class _DonePageState extends State<DonePage> {
                         .serviceData,
                     child: ActiveTickets(tickets: tickets, index: index));
               },
-            )),
-      ]),
-    );
+            ),
+          );
   }
 }
 
@@ -73,7 +73,6 @@ class ActiveTickets extends StatelessWidget {
 
     return service != null
         ? Container(
-
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,4 +161,3 @@ class ActiveTickets extends StatelessWidget {
         : Loading();
   }
 }
-

@@ -4,7 +4,7 @@ import 'package:UQS/Models/route.dart';
 import 'package:UQS/Services/authservice.dart';
 import 'package:UQS/Models/user.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 void main() => runApp(MyApp());
 

@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:UQS/Models/service.dart';
 
-
 import '../viewticket.dart';
 
 class CancelledPage extends StatefulWidget {
@@ -21,17 +20,25 @@ class _CancelledPageState extends State<CancelledPage> {
   Widget build(BuildContext context) {
     final screenData = MediaQuery.of(context);
     final tickets = Provider.of<List<Cancelled>>(context) ?? [];
-    final User user = Provider.of<User>(context);
-    return Container(
-      child: Column(children: <Widget>[
-        Container(
-          height: screenData.size.height / 1.3,
+
+    return tickets.length == 0
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'No cancelled tickets',
+                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+              ),
+            ],
+          )
+        : Container(
+            height: screenData.size.height / 1.3,
             child: GridView.builder(
               physics: ScrollPhysics(),
               itemCount: tickets.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
-                   childAspectRatio: 2.3,
+                  childAspectRatio: 2.3,
                   mainAxisSpacing: 0.3),
               itemBuilder: (context, index) {
                 return StreamProvider<Service>.value(
@@ -39,9 +46,8 @@ class _CancelledPageState extends State<CancelledPage> {
                         .serviceData,
                     child: ActiveTickets(tickets: tickets, index: index));
               },
-            )),
-      ]),
-    );
+            ),
+          );
   }
 }
 
@@ -71,7 +77,6 @@ class ActiveTickets extends StatelessWidget {
 
     return service != null
         ? Container(
-
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,4 +172,3 @@ class ActiveTickets extends StatelessWidget {
         : Loading();
   }
 }
-

@@ -71,20 +71,6 @@ class _BillsBanksState extends State<BillsBanks> {
   }
 }
 
-/*
-  child: GridView.builder(
-            physics: ScrollPhysics(),
-            itemCount: service1.length,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (context, index) {
-              return StreamProvider<List<BillsBanksCategory>>.value(
-                value: ServiceDatabase().billsbanksCategory,
-                child: BillsBanksTile(service: service1[index]),
-              );
-            })
-*/
-
 class BillsBanksTile extends StatelessWidget {
   final BillsBanksCategory service;
   BillsBanksTile({this.service, int index});
@@ -113,51 +99,47 @@ class BillsBanksTile extends StatelessWidget {
               color: Colors.transparent,
               elevation: 0,
               child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                        image:
-                            AssetImage('assets/stillbg.png'),
-                        fit: BoxFit.cover)),
-                        child: Container(
-                          decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      gradient:
-                          LinearGradient(begin: Alignment.bottomRight, colors: [
-                        Colors.black.withOpacity(.4),
-                        Colors.black.withOpacity(.2),
+                      gradient: LinearGradient(colors: [
+                        Color.fromRGBO(16, 127, 246, 1),
+                        Color.fromRGBO(16, 127, 246, 1),
                       ])),
-    child: Transform.translate(
-                  offset: Offset(0, -0),
-                  child: GestureDetector(
-                    onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ViewService(
-                              displayName: service.displayName,
-                              abbreviation: service.abbreviation,
-                              email: service.email,
-                              phoneNumber: service.phoneNumber,
-                              photoUrl: service.photoUrl,
-                               address: service.address,
-                              categoryIndex: service.categoryIndex,
-                              ticketCount: service.ticketCount,
-                              uid: service.uid)));
-                    },
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 45, vertical: 40),
-                      child: CachedNetworkImage(
-                        imageUrl: '${service.photoUrl}',
-                        placeholder: (context, url) =>
-                            Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Transform.translate(
+                      offset: Offset(0, -0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ViewService(
+                                  displayName: service.displayName,
+                                  abbreviation: service.abbreviation,
+                                  email: service.email,
+                                  phoneNumber: service.phoneNumber,
+                                  photoUrl: service.photoUrl,
+                                  address: service.address,
+                                  categoryIndex: service.categoryIndex,
+                                  ticketCount: service.ticketCount,
+                                   ticketCountDone: service.ticketCountDone,
+                                  uid: service.uid)));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 45, vertical: 40),
+                          child: CachedNetworkImage(
+                            imageUrl: '${service.photoUrl}',
+                            placeholder: (context, url) =>
+                                Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                        )
-            
-              ),
+                  )),
             ))
         : null;
   }

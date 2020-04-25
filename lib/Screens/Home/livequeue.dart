@@ -95,7 +95,7 @@ class _LiveQueueState extends State<LiveQueue> {
                               ]);
                         });
                   } else {
-                    return Text('loading ticket timeline');
+                    return Text('loading service queue');
                   }
                 },
               ),

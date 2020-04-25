@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:UQS/Services/userDatabase.dart';
 import 'package:UQS/Models/user.dart';
-import 'package:UQS/Screens/login.dart';
+
 
 //@cedrick gin compile ko na di tanan nga function concerning Firebase Authentication
 class AuthService {

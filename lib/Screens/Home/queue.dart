@@ -97,33 +97,40 @@ class _QueueState extends State<Queue> {
                   topLeft: Radius.circular(25), topRight: Radius.circular(25)),
             ),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("Select a trigger"),
                   int.parse(onqueue) >= five
                       ? Container(
-                         child: NumberPicker.integer(
+                          child: NumberPicker.integer(
                               initialValue: _currentValue,
                               minValue: 0,
                               maxValue: 20,
                               onChanged: (newValue) =>
                                   {setState(() => _currentValue = newValue)}),
                         )
-                      : Text("Trigger on this service is not applicable."),
-                      SizedBox(height: 25.0),
-                       Row(
+                      : Column(
+          
                           children: <Widget>[
-                            Switch(
-                              value: isEmailNotify,
-                              onChanged: (value) =>
-                                  {setState(() => isEmailNotify = true)},
-                              activeTrackColor: Colors.blue,
-                              activeColor: Colors.blueAccent,
-                            ),
-                            Text('Email Notification'),
-                          ],
-                        ),
-                         SizedBox(height: 25.0),
+                            SizedBox(height: 10.0),
+                              Text(
+                                "Trigger on this service is not applicable.\nonly services with 5 and above pending tickets.",
+                              ),
+                            ]),
+                             SizedBox(height: 10.0),
+                  Row(
+                    children: <Widget>[
+                      Switch(
+                        value: isEmailNotify,
+                        onChanged: (value) =>
+                            {setState(() => isEmailNotify = true)},
+                        activeTrackColor: Colors.blue,
+                        activeColor: Colors.blueAccent,
+                      ),
+                      Text('Email Notification'),
+                    ],
+                  ),
+                   SizedBox(height: 10.0),
                   GestureDetector(
                     onTap: () async {
                       TicketDatabase(

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:UQS/Models/service.dart';
-import 'package:UQS/Screens/Home/category/university.dart';
 
 //functions for concerning the database for services
 class ServiceDatabase {

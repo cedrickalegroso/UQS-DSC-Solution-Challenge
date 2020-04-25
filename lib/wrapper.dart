@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:UQS/Miscellaneous/loading.dart';
 import 'package:UQS/Screens/Home/home.dart';
 import 'package:UQS/Screens/login.dart';
 import 'package:UQS/Models/user.dart';
