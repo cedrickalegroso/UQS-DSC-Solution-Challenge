@@ -15,6 +15,7 @@ class ViewTicket extends StatefulWidget {
   num ticketdone;
   num teller;
   num ticketRaw;
+  num timestampDone;
   String ticketNo;
   String refNo;
   String uid;
@@ -32,6 +33,7 @@ class ViewTicket extends StatefulWidget {
     this.refNo,
     this.uid,
     this.teller,
+    this.timestampDone,
     this.ticketRaw,
     this.ticketdone,
   }) : super(key: key);
@@ -50,6 +52,7 @@ class ViewTicket extends StatefulWidget {
       uid,
       teller,
       ticketRaw,
+      timestampDone,
       ticketdone);
 }
 
@@ -67,6 +70,7 @@ class _ViewTicketState extends State<ViewTicket> {
   num teller;
   num ticketRaw;
   num ticketdone;
+  num timestampDone;
 
   _ViewTicketState(
       this.displayName,
@@ -81,6 +85,7 @@ class _ViewTicketState extends State<ViewTicket> {
       this.uid,
       this.teller,
       this.ticketRaw,
+        this.timestampDone,
       this.ticketdone);
 
   Future<List> timelines;
@@ -113,10 +118,10 @@ class _ViewTicketState extends State<ViewTicket> {
           child: Container(
             padding: EdgeInsets.all(0.0),
             decoration: BoxDecoration(
-                 gradient: LinearGradient(colors: [
-                            Color.fromRGBO(16, 127, 246, 1),
-                            Color.fromRGBO(16, 127, 246, 1),
-                          ])),
+                gradient: LinearGradient(colors: [
+              Color.fromRGBO(16, 127, 246, 1),
+              Color.fromRGBO(16, 127, 246, 1),
+            ])),
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 35, vertical: 40),
               child: Column(
@@ -150,6 +155,7 @@ class _ViewTicketState extends State<ViewTicket> {
                           fontSize: 15,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 5.0),
+
                   Text(
                       teller == 0
                           ? 'Teller: No Teller Please wait'
@@ -159,9 +165,11 @@ class _ViewTicketState extends State<ViewTicket> {
                           fontSize: 15,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.0),
+         
                   GestureDetector(
                     onTap: () async {
                       await TicketDatabase(refNo: refNo).cancelTicket();
+                      Navigator.pop(context);
                     },
                     child: Container(
                       height: 30,
@@ -215,7 +223,7 @@ class _ViewTicketState extends State<ViewTicket> {
                   Text('Timeline',
                       style: TextStyle(
                           color: Colors.blueAccent,
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold)),
                   SizedBox(
                     height: 10,

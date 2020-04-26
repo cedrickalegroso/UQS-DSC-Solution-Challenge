@@ -1,4 +1,5 @@
 class Ticket {
+  final num timestampDone;
   final num isEmailNotify;
   final String refNo;
   final String serviceUid;
@@ -12,7 +13,8 @@ class Ticket {
   final num alreadyNotified;
 
   Ticket(
-      {this.isEmailNotify,
+      {this.timestampDone,
+      this.isEmailNotify,
       this.refNo,
       this.serviceUid,
       this.teller,
@@ -25,8 +27,8 @@ class Ticket {
       this.alreadyNotified});
 }
 
-
 class Active {
+  final num timestampDone;
   final num isEmailNotify;
   final String refNo;
   final String serviceUid;
@@ -40,7 +42,8 @@ class Active {
   final num alreadyNotified;
 
   Active(
-      {this.isEmailNotify,
+      {this.timestampDone,
+      this.isEmailNotify,
       this.refNo,
       this.serviceUid,
       this.teller,
@@ -54,6 +57,7 @@ class Active {
 }
 
 class Done {
+  final num timestampDone;
   final num isEmailNotify;
   final String refNo;
   final String serviceUid;
@@ -67,7 +71,8 @@ class Done {
   final num alreadyNotified;
 
   Done(
-      {this.isEmailNotify,
+      {this.timestampDone,
+      this.isEmailNotify,
       this.refNo,
       this.serviceUid,
       this.teller,
@@ -91,6 +96,7 @@ class Cancelled {
   final num trigger;
   final num ticketStatus;
   final num timestamp;
+  final num timestampDone;
   final num alreadyNotified;
 
   Cancelled(
@@ -104,6 +110,6 @@ class Cancelled {
       this.trigger,
       this.ticketStatus,
       this.timestamp,
+      this.timestampDone,
       this.alreadyNotified});
 }
-

@@ -151,6 +151,8 @@ class ActiveTickets extends StatelessWidget {
                                                       service.categoryIndex,
                                                   ticketdone:
                                                       service.ticketCountDone,
+                                                      timestampDone:
+                                                      tickets[index].timestampDone,
                                                   uid: service.uid)));
                                     })
                               ],

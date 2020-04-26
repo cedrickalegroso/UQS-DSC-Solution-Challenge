@@ -149,6 +149,7 @@ class ActiveTickets extends StatelessWidget {
                                           ticketCount: service.ticketCount,
                                           ticketNo: ticketNo,
                                           refNo: refNo,
+                                          timestampDone: tickets[index].timestampDone,
                                           teller: tickets[index].teller,
                                           ticketRaw: tickets[index].ticketRaw,
                                           categoryIndex: service.categoryIndex,
