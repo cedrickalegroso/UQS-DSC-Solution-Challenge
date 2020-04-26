@@ -82,7 +82,7 @@ class _LiveQueueState extends State<LiveQueue> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text( 'Teller: ' +
-                                  snapshot.data[index]['teller'],
+                                  snapshot.data[index]['teller'].toString(),
                                   style: TextStyle(
                                       color: Colors.blueAccent, fontSize: screenData.size.height / 50, fontWeight: FontWeight.bold),
                                 ),
